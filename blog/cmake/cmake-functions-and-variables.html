@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../index.html">Home</a>
+              <a class="logo" href="./../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../about.html">About</a>
+              <a class="logo" href="./../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                                              <img src=https://i.pinimg.com/564x/d9/7c/06/d97c066b78abc3f150bef932a16c726f.jpg>
+                <header id="title-block-header">
+    <h1 class="title">Cmake Functions and Variables</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">27 Nov 2019</p>
+            </header>
+    <hr>
+<p>Here are some commonly use <code>cmake</code> things I use:</p>
+<ul>
+<li>Useful variable: <code>${VAR}</code>
+<ul>
+<li><code>PROJECT_SOURCE_DIR</code>: gives access to top level source directory</li>
+<li><code>CMAKE_CURRENT_SOURCE_DIR</code>: gives access to the current directory</li>
+</ul></li>
+<li><code>$ENV{HOME}</code>: grab environmental variables like <code>${HOME}</code> path</li>
+<li><code>project(name VERSION 1.2.3 LANGUAGES CXX)     -</code>PROJECT_NAME` set by above</li>
+<li>Global:
+<ul>
+<li><code>include_directories(path)</code>: manually add include path</li>
+<li><code>link_directories(path)</code>: manually add link path</li>
+</ul></li>
+<li>Targets:
+<ul>
+<li><code>target_link_libraries(TARGET PUBLIC|PRIVATE dirs)</code>: link libraries per target</li>
+<li><code>target_include_directories(TARGET PUBLIC|PRIVATE libs)</code>: set include path per target</li>
+</ul></li>
+<li><code>set(VARIABLE value)</code>: set a variable to a value</li>
+<li><code>list(APPEND VAR_NAME "${STUFF}")</code>: create a list of stuff</li>
+<li><code>message(STATUS "my message ${some_variable}")</code>: print a message when cmake runs</li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

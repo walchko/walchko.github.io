@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                                              <img src=https://i.pinimg.com/564x/58/37/6a/58376ab4473c4792c1115038393d3f5a.jpg>
+                <header id="title-block-header">
+    <h1 class="title">Curl and Wget</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">2015-06-01</p>
+            </header>
+    <hr>
+<h2 id="wget"><code>wget</code></h2>
+<pre><code>wget &quot;https://somewhere/file&quot;</code></pre>
+<h2 id="curl"><code>curl</code></h2>
+<p>This cheatsheet came from <a href="http://blog.mixu.net/2013/01/29/curl-cheatsheet/">mixu</a>.</p>
+<p>Simple GET request:</p>
+<pre><code>curl -k &quot;https://localhost/foo?bar=baz&amp;amp;abc=def&quot;</code></pre>
+<p>JSON POST or PUT request:</p>
+<pre><code>curl -k -H &quot;Content-Type: application/json&quot; -X POST -d &#39;{&quot;accountName&quot;:&quot;test&quot;,&quot;value&quot;:&quot;hello&quot;}&#39; https://localhost/foo</code></pre>
+<p>or :</p>
+<pre><code>curl -X &quot;PUT&quot;</code></pre>
+<p>POST a file :</p>
+<pre><code>curl ... --data-binary @filename</code></pre>
+<p>Fake a /etc/hosts entry and a Host: header with curl :</p>
+<pre><code>curl -vvv --resolve &#39;book.mixu.net:80:123.145.167.189&#39; http://book.mixu.net/</code></pre>
+<p>Make a request with basic auth enabled :</p>
+<pre><code>curl -vvv -u name@foo.com:password http://www.example.com</code></pre>
+<p>or :</p>
+<pre><code>curl --user name:password http://www.example.com</code></pre>
+<p>Set the Referer header :</p>
+<pre><code>curl -e http://curl.haxx.se daniel.haxx.se</code></pre>
+<p>Set the User Agent header :</p>
+<pre><code>curl -A &quot;Mozilla/4.73&quot;</code></pre>
+<p>or :</p>
+<pre><code>curl --user-agent &quot;Mozilla&quot;.</code></pre>
+<p>Set Cookies :</p>
+<pre><code>curl -b &quot;name=Daniel&quot;</code></pre>
+<p>or :</p>
+<pre><code>curl --cookie &quot;name=Daniel&quot;</code></pre>
+<p>Time a request (connect time + time to first byte + total tile) :</p>
+<pre><code>curl -o /dev/null -w &quot;Connect: %{time_connect} TTFB: %{time_starttransfer} Total time: %{time_total} \n&quot; http://google.com</code></pre>
+<p>Downloading files from Github :</p>
+<pre><code>curl -O  https://raw.github.com/username/reponame/master/filename</code></pre>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Adafruit Microcontrollers and Circuitpython</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">20 Nov 2019</p>
+            </header>
+    <hr>
+<p>Adafruit’s more advanced micro controllers come with a version of <a href="http://micropython.org/">MicroPython</a> installed on them called <a href="https://learn.adafruit.com/welcome-to-circuitpython/what-is-circuitpython">Circuitpython</a>. I have worked with some of these micro controllers and really like them.</p>
+<h2 id="what-is-it">What is it?</h2>
+<p>CircuitPython is a lean and efficient implementation of the Python 3 programming language that includes a small subset of the Python standard library and is optimised to run on microcontrollers and in constrained environments.</p>
+<h2 id="documentation">Documentation</h2>
+<p><a href="https://circuitpython.readthedocs.io/en/latest/docs/index.html">CircuitPython Latest Docs</a> <a href="https://circuitpython.readthedocs.io/projects/bundle/en/latest/index.html">Adafruit CircuitPython Library Bundle Docs</a></p>
+<h2 id="libraries">Libraries</h2>
+<p>There are a lot of libraries available:</p>
+<ul>
+<li><a href="https://github.com/adafruit/Adafruit_CircuitPython_Bundle">Adafruit’s github repos</a></li>
+<li><a href="https://github.com/mmabey/CircuitPython_HCSR04">HCSR-04 drivers</a></li>
+</ul>
+<h2 id="boot">Boot</h2>
+<p><img src="boot.png" /></p>
+<h2 id="usb-serial-connection-to-repl">USB Serial Connection to REPL</h2>
+<p>You can interact with the board’s REPL using <code>screen /dev/tty* 115200</code>. Linux serial is typically <code>/dev/ttyACM*</code> and Apple is <code>/dev/usbmodem*</code>. You can stop <code>screen</code> with <code>Ctl-a</code> then <code>k</code>.</p>
+<h2 id="trinket-m0">Trinket M0</h2>
+<p><img src="Trinket_M0.png" width="500px"></p>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

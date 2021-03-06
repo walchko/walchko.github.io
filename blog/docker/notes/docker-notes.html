@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Docker Notes and Useful Things</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">3 Apr 2017</p>
+            </header>
+    <hr>
+<p><img src="pics/container.png" /></p>
+<h2 id="definitions">Definitions</h2>
+<p><img src="pics/docker.png" /></p>
+<ul>
+<li><strong>Container:</strong> A container is a runtime instance of an image—what the image becomes in memory when actually executed. It runs completely isolated from the host environment by default, only accessing host files and ports if configured to do so. Containers run apps natively on the host machine’s kernel. They have better performance characteristics than virtual machines that only get virtual access to host resources through a hypervisor. Containers can get native access, each one running in a discrete process, taking no more memory than any other executable.</li>
+<li><strong>Image:</strong> An image is a lightweight, stand-alone, executable package that includes everything needed to run a piece of software, including the code, a runtime, libraries, environment variables, and config files. Available for both Linux and Windows based apps, containerized software will always run the same, regardless of the environment.</li>
+</ul>
+<h2 id="scripts">Scripts</h2>
+<p>You are probably already logged into Docker Cloud, but if not: <code>docker login</code>.</p>
+<p>Unfortunately docker is a nightmare of commands and hidden things you have to pry out with a crowbar. Here are some scripts I have used. They are helpful but not all powerful … YMMV.</p>
+<h3 id="build">Build</h3>
+<pre><code>#!/bin/bash
+#
+# docker build -t rpi --squash .
+# -t tag name
+# --squash get rid of intermediate builds (RUN) and make as small as possible
+
+docker build -t rpi --squash .</code></pre>
+<h3 id="cean-up">Cean Up</h3>
+<pre><code>#!/bin/bash
+
+#docker images | egrep &quot;^&lt;none&gt;&quot; | awk &#39;{print $3}&#39; | xargs docker rmi -f
+
+# docker container rm $(docker container ls -a -q)
+
+echo &quot;*** Prune system, containers, images, and volumes ***&quot;
+docker system prune -a -f
+docker images prune -a
+docker volume prune -f
+docker container prune -f
+# docker rmi $(docker ps -q)
+docker rmi $(docker images -a -q)
+echo &quot;*** Done ***&quot;
+echo &quot;&quot;
+echo &quot;*** List All Images ***&quot;
+docker images -a</code></pre>
+<h3 id="run">Run</h3>
+<pre><code>#!/bin/bash
+#
+# docker run -ti -p 8888:8888  -v `pwd`/notebooks:/notebooks rpi /bin/bash
+# -ti is interactive
+# -p opens ports &lt;real machine&gt;:&lt;container&gt;
+# -v mounts real machines file system &lt;real machine&gt;:&lt;container&gt;, note,
+#    it has to be a complete full path
+# rpi is the tag name
+# /bin/bash tells it to run bash
+
+docker run -ti -p 8888:8888  -v `pwd`/notebooks:/notebooks rpi /bin/bash</code></pre>
+<h3 id="push-image">Push Image</h3>
+<pre><code>#!/bin/bash
+
+if [[ $# -eq 0 ]]; then
+    echo &quot;Please give a version number\n Ex: ./push-docker.sh 1.2.3\n&quot;
+fi
+
+VER=$1
+
+docker tag rpi walchko/rpi:${VER}
+docker push walchko/rpi:${VER}
+
+# print some stuff
+docker history --human rpi:${VER}</code></pre>
+<h3 id="test">Test</h3>
+<p>Download and run an image, but nothing is kept on your machine: <code>docker run -ti --rm debian:stretch /bin/bash</code></p>
+<h2 id="run-1">Run</h2>
+<p>From the command line: <code>jupyter notebook --allow-root --no-browser</code></p>
+<h2 id="misc">Misc</h2>
+<ul>
+<li>List containers: <code>docker container ls</code></li>
+<li>Stop container: <code>docker container stop &lt;id&gt;</code></li>
+<li>List images: <code>docker images</code></li>
+<li>Tag image: <code>docker tag rpi walchko/rpi:1.2.3</code></li>
+<li>Publish image: <code>docker push walchko/rpi:1.2.3</code></li>
+<li>Run image from anywhere: <code>docker run -p 8888:8888 walchko/rpi:latest</code></li>
+</ul>
+<h1 id="slimming">Slimming</h1>
+<p>How big is everything? Use the history command:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">kevin@dalek</span> ~ $ docker history rpi</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">IMAGE</span>               CREATED             CREATED BY                                      SIZE                COMMENT</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">4ba21dd216ea</span>        41 minutes ago      /bin/sh <span class="at">-c</span> <span class="co">#(nop)  CMD [&quot;jupyter&quot; &quot;notebook&quot;…   0B                  </span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">6b905d51e97e</span>        41 minutes ago      /bin/sh <span class="at">-c</span> <span class="co">#(nop)  EXPOSE 8888                  0B                  </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">109da496f313</span>        41 minutes ago      /bin/sh <span class="at">-c</span> <span class="co">#(nop) WORKDIR /notebooks            0B                  </span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">b8d04ffd15c5</span>        41 minutes ago      /bin/sh <span class="at">-c</span> <span class="co">#(nop)  VOLUME [/notebooks]          0B                  </span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">69561c4bb3bb</span>        41 minutes ago      /bin/sh <span class="at">-c</span> DEBIAN_FRONTEND=noninteractive ./…   5.4GB               </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">5064a55ce1fd</span>        About an hour ago   /bin/sh <span class="at">-c</span> <span class="co">#(nop) ADD file:51db87644bb0b2df8…   3.44kB              </span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">35e68d676796</span>        About an hour ago   /bin/sh <span class="at">-c</span> <span class="co">#(nop) WORKDIR /root/tmp             0B                  </span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ex">566fe9d7dc2d</span>        About an hour ago   /bin/sh <span class="at">-c</span> mkdir <span class="at">-p</span> <span class="at">-m</span> 700 /root/.jupyter/ <span class="kw">&amp;</span><span class="ex">…</span>   23B                 </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="ex">9aa685e06a73</span>        About an hour ago   /bin/sh <span class="at">-c</span> apt-get update <span class="at">-qq</span> <span class="kw">&amp;&amp;</span>     <span class="ex">DEBIAN_…</span>   0B                  </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="ex">a70238ae7b87</span>        About an hour ago   /bin/sh <span class="at">-c</span> <span class="co">#(nop) ADD file:5a181f9c9bb1c6a5e…   1.77kB              </span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="ex">c20f7490e1c1</span>        About an hour ago   /bin/sh <span class="at">-c</span> pip2 <span class="at">--no-cache-dir</span> install jupyt…   379MB               </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="ex">4d3f8dc130c9</span>        About an hour ago   /bin/sh <span class="at">-c</span> curl <span class="at">-O</span> https://bootstrap.pypa.io…   46MB                </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="ex">da40e66ce497</span>        About an hour ago   /bin/sh <span class="at">-c</span> apt-get update <span class="at">-qq</span> <span class="kw">&amp;&amp;</span>     <span class="ex">DEBIAN_…</span>   829MB               </span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="ex">64aa3aeb4cf3</span>        About an hour ago   /bin/sh <span class="at">-c</span> <span class="co">#(nop)  ENV PYTHONIOENCODING=UTF-8   0B                  </span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="ex">0e73c47f2cc5</span>        About an hour ago   /bin/sh <span class="at">-c</span> <span class="co">#(nop)  ENV LC_ALL=en_US.UTF-8       0B                  </span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="ex">03f78ca55e00</span>        About an hour ago   /bin/sh <span class="at">-c</span> <span class="co">#(nop)  ENV LANG=en_US.UTF-8         0B                  </span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="ex">b79808c7b7d5</span>        About an hour ago   /bin/sh <span class="at">-c</span> <span class="co">#(nop)  ENV LANGUAGE=en_US.UTF-8     0B                  </span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="ex">da653cee0545</span>        6 weeks ago         /bin/sh <span class="at">-c</span> <span class="co">#(nop)  CMD [&quot;bash&quot;]                 0B                  </span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>missing<span class="op">&gt;</span>           6 <span class="ex">weeks</span> ago         /bin/sh <span class="at">-c</span> <span class="co">#(nop) ADD file:eb2519421c9794ccc…   100MB</span></span></code></pre></div>
+<h1 id="docker-cheat-sheet">Docker <a href="https://docs.docker.com/get-started/part2/#recap-and-cheat-sheet-optional">Cheat Sheet</a></h1>
+<table>
+<colgroup>
+<col style="width: 52%" />
+<col style="width: 47%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>docker build -t friendlyhello .</code></td>
+<td>Create image using this directory’s Dockerfile</td>
+</tr>
+<tr class="even">
+<td><code>docker run -p 4000:80 friendlyhello</code></td>
+<td>Run “friendlyname” mapping port 4000 to 80</td>
+</tr>
+<tr class="odd">
+<td><code>docker run -d -p 4000:80 friendlyhello</code></td>
+<td>Same thing, but in detached mode</td>
+</tr>
+<tr class="even">
+<td><code>docker container ls</code></td>
+<td>List all running containers</td>
+</tr>
+<tr class="odd">
+<td><code>docker container ls -a</code></td>
+<td>List all containers, even those not running</td>
+</tr>
+<tr class="even">
+<td><code>docker container stop &lt;hash&gt;</code></td>
+<td>Gracefully stop the specified container</td>
+</tr>
+<tr class="odd">
+<td><code>docker container kill &lt;hash&gt;</code></td>
+<td>Force shutdown of the specified container</td>
+</tr>
+<tr class="even">
+<td><code>docker container rm &lt;hash&gt;</code></td>
+<td>Remove specified container from this machine</td>
+</tr>
+<tr class="odd">
+<td><code>docker container rm $(docker container ls -a -q)</code></td>
+<td>Remove all containers</td>
+</tr>
+<tr class="even">
+<td><code>docker image ls -a</code></td>
+<td>List all images on this machine</td>
+</tr>
+<tr class="odd">
+<td><code>docker image rm &lt;image id&gt;</code></td>
+<td>Remove specified image from this machine</td>
+</tr>
+<tr class="even">
+<td><code>docker image rm $(docker image ls -a -q)</code></td>
+<td>Remove all images from this machine</td>
+</tr>
+<tr class="odd">
+<td><code>docker login</code></td>
+<td>Log in this CLI session using your Docker credentials</td>
+</tr>
+<tr class="even">
+<td><code>docker tag &lt;image&gt; username/repository:tag</code></td>
+<td>Tag <image> for upload to registry</td>
+</tr>
+<tr class="odd">
+<td><code>docker push username/repository:tag</code></td>
+<td>Upload tagged image to registry</td>
+</tr>
+<tr class="even">
+<td><code>docker run username/repository:tag</code></td>
+<td>Run image from a registry</td>
+</tr>
+</tbody>
+</table>
+<h1 id="references">References</h1>
+<ul>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes">DigitalOceans: Removing images and volumes</a></li>
+<li><a href="static/docker-cs-1.pdf">Docker cheat sheet</a></li>
+<li><a href="static/docker-cs-2.pdf">Docker cheat sheet</a></li>
+<li><a href="static/docker-cs-3.pdf">Docker cheat sheet</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

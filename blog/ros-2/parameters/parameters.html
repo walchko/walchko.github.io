@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">ROS2 Parameters</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">31 Aug 2020</p>
+            </header>
+    <hr>
+<p>ROS allows you to set parameters and then change them at run-time without having to recompile/build your code.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rclpy</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rclpy.node <span class="im">import</span> Node</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TestParams(Node):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(<span class="st">&#39;test_params_rclpy&#39;</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.declare_parameter(<span class="st">&#39;my_str&#39;</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.declare_parameter(<span class="st">&#39;my_int&#39;</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.declare_parameter(<span class="st">&#39;my_double_array&#39;</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># The following is just to start the node</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> main(args<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    rclpy.init(args<span class="op">=</span>args)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    node <span class="op">=</span> TestParams()</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    rclpy.spin(node)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    node.destroy_node()</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    rclpy.shutdown()</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&quot;__main__&quot;</span>:</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    main()</span></code></pre></div>
+<p>You can set the values at run-time from the command line:</p>
+<pre><code>$ ros2 run ros2_tutorials test_params_rclpy --ros-args -p my_str:=&quot;Hello world&quot; -p my_int:=5 -p my_double_array:=&quot;[4.4, 5.5, 6.6]&quot;</code></pre>
+<h2 id="setup-callback-for-parameters">Setup Callback for Parameters</h2>
+<p>You can also setup a callback function to handle parameter calls at run-time.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rclpy</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rclpy.node <span class="im">import</span> Node</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rclpy.parameter <span class="im">import</span> Parameter</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rcl_interfaces.msg <span class="im">import</span> SetParametersResult</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TestParams(Node):</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> parameter_callback(<span class="va">self</span>, params):</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> param <span class="kw">in</span> params:</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> param.name <span class="op">==</span> <span class="st">&#39;my_str&#39;</span> <span class="kw">and</span> param.type_ <span class="op">==</span> Parameter.Type.STRING:</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.my_str <span class="op">=</span> param.value</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> SetParametersResult(successful<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(<span class="st">&#39;test_params_rclpy&#39;</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.declare_parameter(<span class="st">&#39;my_str&#39;</span>, <span class="st">&#39;default value&#39;</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.my_str <span class="op">=</span> <span class="va">self</span>.get_parameter(<span class="st">&#39;my_str&#39;</span>).value</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.get_logger().info(<span class="st">&quot;New value set: </span><span class="sc">%s</span><span class="st">&quot;</span> <span class="op">%</span> <span class="va">self</span>.my_str)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.set_parameters_callback(<span class="va">self</span>.parameter_callback)</span></code></pre></div>
+<h2 id="launch-file">Launch File</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> launch <span class="im">import</span> LaunchDescription</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> launch_ros.actions <span class="im">import</span> Node</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_launch_description():</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> LaunchDescription([</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        Node(</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>            package<span class="op">=</span><span class="st">&#39;ros2_tutorials&#39;</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>            executable<span class="op">=</span><span class="st">&#39;test_params_rclpy&#39;</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>            parameters<span class="op">=</span>[</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                {<span class="st">&#39;my_str&#39;</span>: <span class="st">&#39;Hello world&#39;</span>},</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>                {<span class="st">&#39;my_int&#39;</span>: <span class="dv">5</span>},</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                {<span class="st">&#39;my_double_array&#39;</span>: [<span class="fl">4.4</span>, <span class="fl">5.5</span>, <span class="fl">6.6</span>]}</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>            ],</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>            output<span class="op">=</span><span class="st">&#39;screen&#39;</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>            emulate_tty<span class="op">=</span><span class="va">True</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    ])</span></code></pre></div>
+<h1 id="yaml-config-file">YAML Config File</h1>
+<p>Another way to set parameters is with a YAML config file. Here your node <code>your_amazing_node</code> is setup with the following parameters:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">your_amazing_node</span><span class="kw">:</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ros__parameters</span><span class="kw">:</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">bool_value</span><span class="kw">:</span><span class="at"> </span><span class="ch">True</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">int_number</span><span class="kw">:</span><span class="at"> </span><span class="dv">5</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">float_number</span><span class="kw">:</span><span class="at"> </span><span class="fl">3.14</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">str_text</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;Hello Universe&quot;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">bool_array</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="ch">True</span><span class="kw">,</span><span class="at"> </span><span class="ch">False</span><span class="kw">,</span><span class="at"> </span><span class="ch">True</span><span class="kw">]</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">int_array</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="dv">10</span><span class="kw">,</span><span class="at"> </span><span class="dv">11</span><span class="kw">,</span><span class="at"> </span><span class="dv">12</span><span class="kw">,</span><span class="at"> </span><span class="dv">13</span><span class="kw">]</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">float_array</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="fl">7.5</span><span class="kw">,</span><span class="at"> </span><span class="fl">400.4</span><span class="kw">]</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">str_array</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">&#39;Nice&#39;</span><span class="kw">,</span><span class="at"> </span><span class="st">&#39;more&#39;</span><span class="kw">,</span><span class="at"> </span><span class="st">&#39;params&#39;</span><span class="kw">]</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">bytes_array</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="dv">0x01</span><span class="kw">,</span><span class="at"> </span><span class="dv">0xF1</span><span class="kw">,</span><span class="at"> </span><span class="dv">0xA2</span><span class="kw">]</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">nested_param</span><span class="kw">:</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">another_int</span><span class="kw">:</span><span class="at"> </span><span class="dv">7</span></span></code></pre></div>
+<p>You can also setup multiple nodes in one YAML file:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">node_1</span><span class="kw">:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ros__parameters</span><span class="kw">:</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">some_text</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;abc&quot;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">node_2</span><span class="kw">:</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ros__parameters</span><span class="kw">:</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">int_number</span><span class="kw">:</span><span class="at"> </span><span class="dv">27</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">float_param</span><span class="kw">:</span><span class="at"> </span><span class="fl">45.2</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">node_3</span><span class="kw">:</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">ros__parameters</span><span class="kw">:</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">int_number</span><span class="kw">:</span><span class="at"> </span><span class="dv">45</span></span></code></pre></div>
+<p>A suggested package layout for packages:</p>
+<pre><code>your_package/
+├── config
+│   └── params.yaml
+├── launch
+│   └── test_params.launch.py
+├── package.xml
+├── ...</code></pre>
+<pre><code>$ ros2 run ros2_tutorials test_yaml_params --ros-args --params-file ~/ros2_ws/src/ros2_tutorials/config/params.yaml</code></pre>
+<h2 id="launch-file-1">Launch File</h2>
+<p>You can also apply the config file in a launch file.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ament_index_python.packages <span class="im">import</span> get_package_share_directory</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> launch <span class="im">import</span> LaunchDescription</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> launch_ros.actions <span class="im">import</span> Node</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_launch_description():</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    ld <span class="op">=</span> LaunchDescription()</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    config <span class="op">=</span> os.path.join(</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        get_package_share_directory(<span class="st">&#39;ros2_tutorials&#39;</span>),</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;config&#39;</span>,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;params.yaml&#39;</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    node<span class="op">=</span>Node(</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>        package <span class="op">=</span> <span class="st">&#39;ros2_tutorials&#39;</span>,</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>        name <span class="op">=</span> <span class="st">&#39;your_amazing_node&#39;</span>,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>        executable <span class="op">=</span> <span class="st">&#39;test_yaml_params&#39;</span>,</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>        parameters <span class="op">=</span> [config]</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    ld.add_action(node)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ld</span></code></pre></div>
+<p>You can also add the config file to your python package in the <code>setup.py</code> file:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    data_files<span class="op">=</span>[</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        (<span class="st">&#39;share/ament_index/resource_index/packages&#39;</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>            [<span class="st">&#39;resource/&#39;</span> <span class="op">+</span> package_name]),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        (<span class="st">&#39;share/&#39;</span> <span class="op">+</span> package_name, [<span class="st">&#39;package.xml&#39;</span>]),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        (os.path.join(<span class="st">&#39;share&#39;</span>, package_name, <span class="st">&#39;launch&#39;</span>), glob(<span class="st">&#39;launch/*.launch.py&#39;</span>)),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        (os.path.join(<span class="st">&#39;share&#39;</span>, package_name, <span class="st">&#39;config&#39;</span>), glob(<span class="st">&#39;config/*.yaml&#39;</span>))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
+<p>A C++ CMake would be:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode cmake"><code class="sourceCode cmake"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">install</span>(<span class="ot">DIRECTORY</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  launch</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="ot">DESTINATION</span> share/<span class="dv">${PROJECT_NAME}</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">install</span>(<span class="ot">DIRECTORY</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  config</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="ot">DESTINATION</span> share/<span class="dv">${PROJECT_NAME}</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
+<h2 id="namespaces">Namespaces</h2>
+<p>You can also put your parameters into a namespace like <code>ns1</code>:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ns1</span><span class="kw">:</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">your_amazing_node</span><span class="kw">:</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ros__parameters</span><span class="kw">:</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">bool_value</span><span class="kw">:</span><span class="at"> </span><span class="ch">True</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="at">      ...</span></span></code></pre></div>
+<p>Now run the node with:</p>
+<pre><code>$ ros2 run ros2_tutorials test_yaml_params --ros-args -r __ns:=/ns1 --params-file ~/ros2_ws/src/ros2_tutorials/config/params.yaml</code></pre>
+<p>Or create a YAML file and make the following change for the namespace:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">...</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">    node=Node(</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">        package = &#39;ros2_tutorials&#39;,</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">        namespace=&#39;ns1&#39;,</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">        name = &#39;your_amazing_node&#39;,</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">        executable = &#39;test_yaml_params&#39;,</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">        parameters = [config]</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">    )</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">...</span></span></code></pre></div>
+<h1 id="did-it-work">Did It Work?</h1>
+<pre><code>$ ros2 param dump /your_amazing_node --print
+your_amazing_node:
+  ros__parameters:
+    bool_array:
+    - true
+    - false
+    - true
+    bool_value: true
+    bytes_array: !!python/object/apply:array.array
+    - q
+    - - 1
+      - 241
+      - 162
+    float_array: !!python/object/apply:array.array
+    - d
+    - - 7.5
+      - 400.4
+    float_number: 3.14
+    int_array: !!python/object/apply:array.array
+    - q
+    - - 10
+      - 11
+      - 12
+      - 13
+    int_number: 5
+    nested_param:
+      another_int: 7
+    str_array:
+    - Nice
+    - more
+    - params
+    str_text: Hello Universe
+    use_sim_time: false</code></pre>
+<h1 id="references">References</h1>
+<ul>
+<li>Roboticsbackend: <a href="https://roboticsbackend.com/ros2-yaml-params/">ROS2 YAML For Parameters</a></li>
+<li>Roboticsbackend: <a href="https://roboticsbackend.com/rclcpp-params-tutorial-get-set-ros2-params-with-cpp/">rclcpp Params Tutorial – Get and Set ROS2 Params with Cpp</a></li>
+<li>Roboticsbackend: <a href="https://roboticsbackend.com/rclpy-params-tutorial-get-set-ros2-params-with-python/">rclpy Params Tutorial – Get and Set ROS2 Params with Python</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

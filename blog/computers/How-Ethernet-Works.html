@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../index.html">Home</a>
+              <a class="logo" href="./../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../about.html">About</a>
+              <a class="logo" href="./../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Ethernet Standard</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">2017-06-14</p>
+            </header>
+    <hr>
+<h2 id="baset">BaseT</h2>
+<p>A standard ethernet cable (Cat 5, CAT 5E, or Cat 6) has 4 pairs of cables (8 wires total). For 10BaseT (10Mbps) and 100BaseT (100Mbps) they only use 2 pairs of wires:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Pin</th>
+<th style="text-align: left;">Color</th>
+<th style="text-align: left;">Function</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">White with Green</td>
+<td style="text-align: left;">+TD</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">Green</td>
+<td style="text-align: left;">-TD</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">White with Orange</td>
+<td style="text-align: left;">+RD</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">Blue</td>
+<td style="text-align: left;">Not Used</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">5</td>
+<td style="text-align: left;">White with Blue</td>
+<td style="text-align: left;">Not Used</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">6</td>
+<td style="text-align: left;">Orange</td>
+<td style="text-align: left;">-RD</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">White with Brown</td>
+<td style="text-align: left;">Not Used</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">Brown</td>
+<td style="text-align: left;">Not Used</td>
+</tr>
+</tbody>
+</table>
+<p>From the table above, you can see that 10/100BaseT only uses the Green and Orange twisted pairs of wires. Where TD and RD are transmit and receive. The +/- is an inverted polarity system to reduce noise and increase performance. Basically, if +TD is at +5V, then -TD is at 0V. This mirroring, helps to reduce reduce noise effects that could drown out a normal signal over long distances.</p>
+<p>Now for 1000BaseT, it operates the same way, but gigabit uses all 4 pairs (8 wires) to communicate.</p>
+<p>#References</p>
+<ul>
+<li><a href="http://www.hardwaresecrets.com/how-gigabit-ethernet-works/">How Gigabit Ethernet Works</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

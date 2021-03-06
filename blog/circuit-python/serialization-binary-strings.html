@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../index.html">Home</a>
+              <a class="logo" href="./../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../about.html">About</a>
+              <a class="logo" href="./../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                                              <img src=https://i.pinimg.com/564x/74/01/77/740177d86501b558dbdd0914210ac897.jpg width=400px>
+                <header id="title-block-header">
+    <h1 class="title">Serialization with Binary Strings</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">26 Apr 2020</p>
+            </header>
+    <hr>
+<p>Unfortunately, for some dumb reason, the only way to get data over the USB is via the <code>print</code> command which sends ASCII characters only … <strong>wtf</strong>! Thus if you <code>print(pi)</code> is will send the ASCII codes <code>['3','.','1','4', ... '\r','\n']</code> and now you have to put this text back together and loose whatever bits didn’t end up in the ASCII string. Since I like to read sensors, I want all of my bits. <span class="emoji" data-emoji="smile">😄</span></p>
+<h2 id="struct"><code>struct</code></h2>
+<p>Circuitpython contains a <code>struct</code> library and allows you to format data into binary strings.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="im">import</span> struct</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> d <span class="op">=</span> struct.pack(<span class="st">&quot;fff&quot;</span>,<span class="op">*</span>(<span class="op">-</span><span class="fl">1.0</span>, <span class="fl">1e-9</span>, <span class="fl">15e8</span>))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> d</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>b<span class="st">&#39;</span><span class="ch">\x00\x00\x80\xbf\\</span><span class="st">p</span><span class="ch">\x890\\\xd0\xb2</span><span class="st">N&#39;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> struct.unpack(<span class="st">&quot;fff&quot;</span>,d)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>(<span class="op">-</span><span class="fl">1.0</span>, <span class="fl">1e-09</span>, <span class="fl">1.5e+09</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> d<span class="op">=</span>struct.pack(<span class="st">&#39;hhl&#39;</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> struct.unpack(<span class="st">&#39;hhl&#39;</span>, d)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span></code></pre></div>
+<h2 id="adafruit_binascii"><code>adafruit_binascii</code></h2>
+<p>However, this alone won’t do it, because they will be sent as ASCII characters still. So let’s make things even easier and turn these into simple hex characters that ASCII likes.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> adafruit_binascii <span class="im">import</span> hexlify, unhexlify</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># convert data (d) and send h with: print(h)</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>h <span class="op">=</span> hexlify(d)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># on the computer side, unpack h to get output, which itself can</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># be unpacked again with struct.unpack ... holy crap this sucks!</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> unhexlify(h)</span></code></pre></div>
+<p>You can also do:</p>
+<ul>
+<li><a href="https://docs.python.org/3.7/library/struct.html#byte-order-size-and-alignment">Byte alignment</a></li>
+<li>Pack/unpack various <a href="https://docs.python.org/3.7/library/struct.html#format-characters">data types</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

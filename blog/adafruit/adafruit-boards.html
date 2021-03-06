@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../index.html">Home</a>
+              <a class="logo" href="./../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../about.html">About</a>
+              <a class="logo" href="./../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                                              <img src=https://i.pinimg.com/564x/92/99/24/929924c948f6ece51e9ea6782f2dbab1.jpg width=400px>
+                <header id="title-block-header">
+    <h1 class="title">Adafruit Boards</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">10 Jan 2021</p>
+            </header>
+    <hr>
+<table>
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 27%" />
+<col style="width: 4%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+<col style="width: 4%" />
+<col style="width: 5%" />
+<col style="width: 7%" />
+<col style="width: 4%" />
+<col style="width: 9%" />
+<col style="width: 7%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Adafruit uC</th>
+<th>Processor</th>
+<th>MHz</th>
+<th>RAM</th>
+<th>ROM</th>
+<th>FPU</th>
+<th>GPIO</th>
+<th>12b ADC</th>
+<th>PWM</th>
+<th>SPI FLASH</th>
+<th>Price</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://www.adafruit.com/product/3500" title="buy">Trinket M0</a></td>
+<td>ATSAMD21E18 32-bit Cortex M0+</td>
+<td>48</td>
+<td>32KB</td>
+<td>256KB</td>
+<td>No</td>
+<td>5</td>
+<td>3</td>
+<td>2</td>
+<td>N/A</td>
+<td>$8.95</td>
+</tr>
+<tr class="even">
+<td><a href="https://www.adafruit.com/product/3727" title="buy">ItsyBitsy M0</a></td>
+<td>ATSAMD21G18 32-bit Cortex M0+</td>
+<td>48</td>
+<td>32KB</td>
+<td>256KB</td>
+<td>No</td>
+<td>23</td>
+<td>11</td>
+<td>13</td>
+<td>2MB</td>
+<td>$11.95</td>
+</tr>
+<tr class="odd">
+<td><a href="https://www.adafruit.com/product/3800" title="buy">ItsyBitsy M4</a></td>
+<td>ATSAMD51 32-bit Cortex M4</td>
+<td>120</td>
+<td>192KB</td>
+<td>512KB</td>
+<td>Yes</td>
+<td>23</td>
+<td>12</td>
+<td>18</td>
+<td>2MB</td>
+<td>$14.95</td>
+</tr>
+<tr class="even">
+<td><a href="https://www.adafruit.com/product/4600" title="buy">QTPy</a></td>
+<td>ATSAMD21E18 32-bit Cortex M0+</td>
+<td>48</td>
+<td>32KB</td>
+<td>256KB</td>
+<td>No</td>
+<td>11</td>
+<td>9</td>
+<td>9</td>
+<td>N/A</td>
+<td>$6</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>FPU: floating point unit</li>
+</ul>
+<h2 id="samd21g">SAMD21G</h2>
+<ul>
+<li>The SAMD21G uses an ARM Cortex M0+ microcontroller, which is about as small and simple as you get with 32-bit devices.</li>
+<li>It runs at 48MHz, usually stabilized by an external 32,768Hz crystal oscillator, and has 38 GPIO pins.</li>
+<li>It has 256K of Flash memory and 32K of RAM. It doesn’t have any EEPROM, but you can read and write sections of the Flash array from code.</li>
+<li>Unlike 8-bit microcontrollers, a 32-bit microcontroller can have multiple copies of a peripheral that are called ‘instances’.</li>
+</ul>
+<h2 id="samd21e">SAMD21E</h2>
+<ul>
+<li>The SAMD21E is a slightly smaller version of the SADM21G, with 32 GPIO pins.</li>
+<li>It has most of the same specs as the SAMD21G, but:
+<ul>
+<li>Its advanced counters can generate six PWM signals per instance instead of eight</li>
+<li>It has four SERCOMs instead of six</li>
+<li>Its ADC can read 10 pins instead of 14</li>
+<li>Its PTC can handle a 10x6 matrix instead of 12x10</li>
+</ul></li>
+</ul>
+<h2 id="samd51">SAMD51</h2>
+<p>The SAMD51 is a new device family from Atmel-now-Microchip, built around a very fast ARM Cortex M4 microcontroller. It’s a super-powerful upgrade. - CircuitPython and Arduino support. - The ’51 is an upgrade to the ’21 so there are many similarities. Most code for the ’21 will run on a ’51, but 6x faster. - It’s more complex and faster than the M0+ - includes a hardware floating-point math unit and digital signal processing array (one command applies a math operation to a whole block of data). - It has 512K of Flash memory and 192K of RAM. - It runs at 120MHz and has 51 GPIO pins.</p>
+<h1 id="references">References</h1>
+<ul>
+<li><a href="https://learn.adafruit.com/how-to-choose-a-microcontroller/the-microcontrollers-in-adafruit-products">The microcontrollers in Adafruit products</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

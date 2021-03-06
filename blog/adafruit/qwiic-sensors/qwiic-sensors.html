@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                                              <img src=https://i.pinimg.com/564x/16/dd/16/16dd16a698bde065bc803e8015a7fb00.jpg>
+                <header id="title-block-header">
+    <h1 class="title">Adafruit Qwiic Sensors for Robotics</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">29 Nov 2020</p>
+            </header>
+    <hr>
+<h1 id="accelerometer">Accelerometer</h1>
+<table>
+<thead>
+<tr class="header">
+<th>Sensor</th>
+<th>Bias (mg)</th>
+<th>Bits</th>
+<th>Noise Density</th>
+<th>RMS(mg) @ 100Hz</th>
+<th>mg/LSB @ 2G</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://www.adafruit.com/product/3463">NXP_FXOS8700CQ</a></td>
+<td>20</td>
+<td>14</td>
+<td>126</td>
+<td>1.11636</td>
+<td>0.244141</td>
+</tr>
+<tr class="even">
+<td><a href="https://www.adafruit.com/product/4485">LSM6DS33</a></td>
+<td>40</td>
+<td>16</td>
+<td>90</td>
+<td>0.797402</td>
+<td>0.0610352</td>
+</tr>
+<tr class="odd">
+<td><a href="https://www.adafruit.com/product/4517">LSM6DSOX</a></td>
+<td>20</td>
+<td>16</td>
+<td>70</td>
+<td>0.620202</td>
+<td>0.0610352</td>
+</tr>
+<tr class="even">
+<td><a href="https://www.adafruit.com/product/4502">ISM330DHCX</a></td>
+<td>Unkn</td>
+<td>16</td>
+<td>60</td>
+<td>0.531601</td>
+<td>0.0610352</td>
+</tr>
+<tr class="odd">
+<td><a href="https://www.adafruit.com/product/4634">LSM9DS1</a></td>
+<td>90</td>
+<td>16</td>
+<td>200</td>
+<td>1.772</td>
+<td>0.0610352</td>
+</tr>
+<tr class="even">
+<td><a href="https://www.adafruit.com/product/4464">ICM-20649</a></td>
+<td>Unkn</td>
+<td>16</td>
+<td>285</td>
+<td>2.52511</td>
+<td>0.0610352</td>
+</tr>
+<tr class="odd">
+<td><a href="https://www.adafruit.com/product/4646">BNO055</a></td>
+<td>80</td>
+<td>14</td>
+<td>150</td>
+<td>1.329</td>
+<td>0.244141</td>
+</tr>
+</tbody>
+</table>
+<h1 id="orientation">Orientation</h1>
+<table>
+<thead>
+<tr class="header">
+<th>Sensor</th>
+<th>I2C</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://www.adafruit.com/product/4646">BNO055</a></td>
+<td>0x28</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><a href="https://www.adafruit.com/product/4754">BNO085</a></td>
+<td>0x4A</td>
+<td>Broke on arrival</td>
+</tr>
+</tbody>
+</table>
+<h1 id="gryoscope">Gryoscope</h1>
+<table>
+<thead>
+<tr class="header">
+<th>Sensor</th>
+<th>Bits</th>
+<th>Noise Density</th>
+<th>Drift</th>
+<th>RMS(mdps) @ 100Hz</th>
+<th>mdps/LSB @ 1000dps</th>
+<th>dps @ 26C</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://www.adafruit.com/product/3463">NXP_FXAS21002C</a></td>
+<td>16</td>
+<td>25</td>
+<td>0.02</td>
+<td>223.607</td>
+<td>30.5176</td>
+<td>0.52</td>
+</tr>
+<tr class="even">
+<td><a href="https://www.adafruit.com/product/4485">LSM6DS33</a></td>
+<td>16</td>
+<td>7</td>
+<td>0.05</td>
+<td>62.6099</td>
+<td>30.5176</td>
+<td>1.3</td>
+</tr>
+<tr class="odd">
+<td><a href="https://www.adafruit.com/product/4517">LSM6DSOX</a></td>
+<td>16</td>
+<td>3.8</td>
+<td>0.01</td>
+<td>33.9882</td>
+<td>30.5176</td>
+<td>0.26</td>
+</tr>
+<tr class="even">
+<td><a href="https://www.adafruit.com/product/4502">ISM330DHCX</a></td>
+<td>16</td>
+<td>5</td>
+<td>0.005</td>
+<td>44.7214</td>
+<td>30.5176</td>
+<td>0.13</td>
+</tr>
+</tbody>
+</table>
+<h1 id="pressure">Pressure</h1>
+<table>
+<thead>
+<tr class="header">
+<th>Sensor</th>
+<th>bits</th>
+<th>Sampling (Hz)</th>
+<th>Abs Accuracy (Pa)</th>
+<th>Rel Accuracy (Pa)</th>
+<th>Range (hPa)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://www.adafruit.com/product/4633">LPS22</a></td>
+<td></td>
+<td></td>
+<td>100</td>
+<td></td>
+<td>260-1260</td>
+</tr>
+<tr class="even">
+<td><a href="https://www.adafruit.com/product/4494">DPS310</a></td>
+<td>24</td>
+<td>128</td>
+<td>100</td>
+<td>6</td>
+<td>300-1200</td>
+</tr>
+<tr class="odd">
+<td><a href="https://www.adafruit.com/product/4816">BMP390</a></td>
+<td>24</td>
+<td>200</td>
+<td>50</td>
+<td>3</td>
+<td>300-1250</td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://cdn-shop.adafruit.com/datasheets/BST-BMP180-DS000-09.pdf">Altitude</a> can be calculated with:</p>
+<p><span class="math display">$$
+altitude = 44330 [1-\frac{p}{p_0}^{\frac{1}{5.255}}]
+$$</span></p>
+<p>where <span class="math inline"><em>p</em><sub>0</sub></span> (sea level) is 101325 Pa.</p>
+<h2 id="led-matrix-displays">LED Matrix Displays</h2>
+<ul>
+<li>All HT16K33 LED backpacks support 400kHz per the <a href="https://cdn-shop.adafruit.com/datasheets/ht16K33v110.pdf">datasheet</a></li>
+</ul>
+<h2 id="terms">Terms</h2>
+<p>Power Spectral Density:</p>
+<ul>
+<li>Power: mean-squared value</li>
+<li>Spectral: distribution of a signal over a spectrum of frequency</li>
+<li>Density: mangitude of the PSD is normalized to a single Hz bandwidth</li>
+</ul>
+<p><span class="math display">$$
+RMS_{noise} = NoiseDensity \sqrt{BW * filter}
+$$</span></p>
+<p>where <span class="math inline"><em>b</em><em>a</em><em>n</em><em>d</em><em>w</em><em>i</em><em>d</em><em>t</em><em>h</em></span> is half the Output Data Rate (ODR), <span class="math inline"><em>f</em><em>i</em><em>l</em><em>t</em><em>e</em><em>r</em></span> is a low pass filter having one of the following values:</p>
+<ul>
+<li>1.57(1st order)</li>
+<li>1.11 (2nd order)</li>
+<li>1.05(3rd order)</li>
+</ul>
+<h2 id="wiring">Wiring</h2>
+<ul>
+<li>Red: 3.3VDC Power</li>
+<li>Black: Ground</li>
+<li>Blue: I2C SDA Data</li>
+<li>Yellow: I2C SCL Clock</li>
+</ul>
+<h1 id="references">References</h1>
+<ul>
+<li>Mide: <a href="https://www.mide.com/air-pressure-at-altitude-calculator">Pressure/Altitude calculator</a></li>
+<li>NXP Accel/Magnetometer: <a href="FXOS8700CQ.pdf">FXOS8700CQ</a></li>
+<li>NXP Gyro: <a href="FXAS21002.pdf">FXAS21002</a></li>
+<li>ST Accel/Gyro <a href="lsm6dsox.pdf">LSM6DSOX</a></li>
+<li>ST Accel/Gyro <a href="lsm6ds33.pdf">LSM6DS33</a></li>
+<li>ST Accel/Gyro <a href="TA0343-LSM9DS1-IMU.pdf">LSM9DS1 tech notes</a></li>
+<li>ST Accel/Gyro <a href="lsm9ds1.pdf">LSM9DS1</a></li>
+<li>ST Accel/Gyro <a href="ism330dhcx.pdf">ISM330DHCX</a></li>
+<li>InvenSense Accel/Gyro <a href="icm-20649.pdf">ICM-20649</a></li>
+<li>ST Magnetometer <a href="lis3mdl.pdf">LIS3MDL</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

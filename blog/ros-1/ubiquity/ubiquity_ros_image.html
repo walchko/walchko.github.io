@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Ubiquity ROS SD Images for RPi</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">21 Sep 2019</p>
+            </header>
+    <hr>
+<h2 id="images">Images</h2>
+<p>Ubiquity Robotics has created SD card images with ROS already installed. You can <a href="https://downloads.ubiquityrobotics.com/pi.html">download here</a>. They are based on Ubuntu 16.04 rather than Raspbian</p>
+<ol type="1">
+<li>Burn image to SD card</li>
+<li>In the boot volume, do <code>touch ssh</code> to enable ssh connections</li>
+</ol>
+<p>The image is setup as follows:</p>
+<ul>
+<li>WiFi is an access point:
+<ul>
+<li>SSID <code>ubiquityrobotXXXX</code> where <code>XXXX</code> is part of the MAC address</li>
+<li>Password: ubuntu</li>
+</ul></li>
+<li>You can also access through ethernet via: <code>ssh ubuntu@ubiquityrobot.local</code> and password ubuntu</li>
+</ul>
+<h2 id="kill-x-windows">Kill X-Windows</h2>
+<p>The image boot stupidly to a deskop and consumes a lot of resources, you can turn this off with: <code>sudo service lightdm stop</code></p>
+<h2 id="ros-is-already-running">ROS is Already Running</h2>
+<p>The image has a bunch of nodes already setup and running when you boot:</p>
+<pre><code>ubuntu@ubiquityrobot:~$ rostopic list
+/battery_state
+/cmd_vel
+/diagnostics
+/joint_states
+/joy
+/left_error
+/motor_node/parameter_descriptions
+/motor_node/parameter_updates
+/right_error
+/rosout
+/rosout_agg
+/statistics
+/tf
+/tf2_web_republisher/cancel
+/tf2_web_republisher/feedback
+/tf2_web_republisher/goal
+/tf2_web_republisher/result
+/tf2_web_republisher/status
+/tf_static</code></pre>
+<p>According to <a href="https://forum.ubiquityrobotics.com/t/changing-start-up-nodes-in-pi-image/55">this post</a>, these can be modified here: <code>/etc/systemd/system/roscore.service</code> and <code>/etc/systemd/system/magni-base.service</code>,</p>
+<p><code>roscore.service</code> launches <code>roscore magni-base.service</code> starts the core nodes for Magni.</p>
+<p>If you look in <code>magni-base.service</code>, you see that it launches the script at <code>/usr/sbin/magni-base</code>. The relevant part of this script is line 32 <code>roslaunch magni_demos teleop.launch &amp;</code> this launches the launch file <code>teleop.launch</code> from the magni_demos package.</p>
+<p>If you already have a launch file for the nodes you should make a copy of both <code>/etc/systemd/system/magni-base.service</code> <code>/usr/sbin/magni-base</code> in their respective directories, naming them to whatever is relevant to your robot.</p>
+<p>Change your version of the script in <code>/usr/sbin/</code> to launch the file you want, and your version of the service file in <code>/etc/systemd/system/</code> to point to your script.</p>
+<p>Then run <code>sudo systemctl disable magni-base</code> and <code>sudo systemctl enable {YOUR SERVICE}</code>. More details on <code>roslaunch</code> can be found <a href="http://wiki.ros.org/ROS/Tutorials/UsingRqtconsoleRoslaunch">here</a></p>
+<h2 id="install-node">Install Node</h2>
+<p>Use their official packages:</p>
+<pre><code># Using Ubuntu
+curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -
+sudo apt-get install -y nodejs</code></pre>
+<h2 id="mote-fixes">Mote Fixes</h2>
+<p>So these are already in <a href="https://github.com/MomsFriendlyRobotCompany/mote">mote</a> in the ros folder.</p>
+<ul>
+<li>change default password</li>
+<li>change hostname</li>
+<li>turn off default robot launch file</li>
+<li>kill x windows</li>
+</ul>
+<p>run sshd 1022 iptables -I INPUT -p tcp –dport 1022 -j ACCEPT</p>
+<h1 id="nodes">Nodes</h1>
+<ul>
+<li><a href="https://github.com/UbiquityRobotics/raspicam_node">PiCamera</a></li>
+<li><a href="http://wiki.ros.org/fiducials">fiducials</a>: uses the aruco markers to allow the robot to understand its orientation</li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

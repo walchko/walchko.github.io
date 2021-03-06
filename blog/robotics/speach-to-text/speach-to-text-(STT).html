@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Speech to Text (STT)</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">2016-03-20</p>
+            </header>
+    <hr>
+<p><strong>Note:</strong> Since Facebook bought wit, its original business is changing. The current python library is a skeleton of what it use to be and the programmers at wit don’t seem to know python very well.</p>
+<h2 id="version-2.0">Version 2.0</h2>
+<p>Wit.ai changed everything …</p>
+<p><a href="http://wit.ai">Wit</a> turns speech into text. Some return examples are:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">&quot;msg_body&quot;</span><span class="fu">:</span> <span class="st">&quot;hello world&quot;</span><span class="fu">,</span> <span class="dt">&quot;msg_id&quot;</span><span class="fu">:</span> <span class="st">&quot;6a410cda-32e0-4602-bcfb-c20f5e1aed66&quot;</span><span class="fu">,</span> <span class="dt">&quot;outcome&quot;</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">&quot;entities&quot;</span><span class="fu">:</span> <span class="fu">{},</span> <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="fl">0.525</span><span class="fu">,</span> <span class="dt">&quot;intent&quot;</span><span class="fu">:</span> <span class="st">&quot;order&quot;</span><span class="fu">}}</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">&quot;msg_body&quot;</span><span class="fu">:</span> <span class="st">&quot;joke&quot;</span><span class="fu">,</span> <span class="dt">&quot;outcome&quot;</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">&quot;entities&quot;</span><span class="fu">:</span> <span class="fu">{},</span> <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="fl">0.767</span><span class="fu">,</span> <span class="dt">&quot;intent&quot;</span><span class="fu">:</span> <span class="st">&quot;joke&quot;</span><span class="fu">},</span> <span class="dt">&quot;msg_id&quot;</span><span class="fu">:</span> <span class="st">&quot;4046cbaf-00cc-4305-9393-06a48e7ed4d3&quot;</span><span class="fu">}</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">&quot;msg_body&quot;</span><span class="fu">:</span> <span class="st">&quot;hello&quot;</span><span class="fu">,</span> <span class="dt">&quot;outcome&quot;</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">&quot;entities&quot;</span><span class="fu">:</span> <span class="fu">{},</span> <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="fl">0.787</span><span class="fu">,</span> <span class="dt">&quot;intent&quot;</span><span class="fu">:</span> <span class="st">&quot;greeting&quot;</span><span class="fu">},</span> <span class="dt">&quot;msg_id&quot;</span><span class="fu">:</span> <span class="st">&quot;6dc2722b-5acc-4066-8727-7c506728aa03&quot;</span><span class="fu">}</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">&quot;msg_body&quot;</span><span class="fu">:</span> <span class="st">&quot;what time is it&quot;</span><span class="fu">,</span> <span class="dt">&quot;outcome&quot;</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">&quot;entities&quot;</span><span class="fu">:</span> <span class="fu">{},</span> <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="fl">0.691</span><span class="fu">,</span> <span class="dt">&quot;intent&quot;</span><span class="fu">:</span> <span class="st">&quot;time&quot;</span><span class="fu">},</span> <span class="dt">&quot;msg_id&quot;</span><span class="fu">:</span> <span class="st">&quot;156c0751-644a-4e76-9b19-fff078574f2f&quot;</span><span class="fu">}</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">&quot;msg_body&quot;</span><span class="fu">:</span> <span class="st">&quot;what is the weather tomorrow&quot;</span><span class="fu">,</span> <span class="dt">&quot;outcome&quot;</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">&quot;entities&quot;</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">&quot;datetime&quot;</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">&quot;body&quot;</span><span class="fu">:</span> <span class="st">&quot;tomorrow&quot;</span><span class="fu">,</span> <span class="dt">&quot;start&quot;</span><span class="fu">:</span> <span class="dv">20</span><span class="fu">,</span> <span class="dt">&quot;end&quot;</span><span class="fu">:</span> <span class="dv">28</span><span class="fu">,</span> <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">&quot;to&quot;</span><span class="fu">:</span> <span class="st">&quot;2014-09-14T00:00:00.000-07:00&quot;</span><span class="fu">,</span> <span class="dt">&quot;from&quot;</span><span class="fu">:</span> <span class="st">&quot;2014-09-13T00:00:00.000-07:00&quot;</span><span class="fu">}}},</span> <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="fl">0.856</span><span class="fu">,</span> <span class="dt">&quot;intent&quot;</span><span class="fu">:</span> <span class="st">&quot;weather&quot;</span><span class="fu">},</span> <span class="dt">&quot;msg_id&quot;</span><span class="fu">:</span> <span class="st">&quot;c325bf08-20a0-47ad-ab14-33c2200a8be7&quot;</span><span class="fu">}</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">&quot;msg_body&quot;</span><span class="fu">:</span> <span class="st">&quot;the weather tomorrow&quot;</span><span class="fu">,</span> <span class="dt">&quot;outcome&quot;</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">&quot;entities&quot;</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">&quot;datetime&quot;</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">&quot;body&quot;</span><span class="fu">:</span> <span class="st">&quot;tomorrow&quot;</span><span class="fu">,</span> <span class="dt">&quot;start&quot;</span><span class="fu">:</span> <span class="dv">12</span><span class="fu">,</span> <span class="dt">&quot;end&quot;</span><span class="fu">:</span> <span class="dv">20</span><span class="fu">,</span> <span class="dt">&quot;value&quot;</span><span class="fu">:</span> <span class="fu">{</span><span class="dt">&quot;to&quot;</span><span class="fu">:</span> <span class="st">&quot;2014-09-14T00:00:00.000-07:00&quot;</span><span class="fu">,</span> <span class="dt">&quot;from&quot;</span><span class="fu">:</span> <span class="st">&quot;2014-09-13T00:00:00.000-07:00&quot;</span><span class="fu">}}},</span> <span class="dt">&quot;confidence&quot;</span><span class="fu">:</span> <span class="fl">0.847</span><span class="fu">,</span> <span class="dt">&quot;intent&quot;</span><span class="fu">:</span> <span class="st">&quot;weather&quot;</span><span class="fu">},</span> <span class="dt">&quot;msg_id&quot;</span><span class="fu">:</span> <span class="st">&quot;ced4d342-2557-4aed-89e6-a948614a87e8&quot;</span><span class="fu">}</span></span></code></pre></div>
+<p>They have recently changed their python library, so now all it does is send a text string to their servers … kind of stupid. You have to write your own code to send audio. Their staff doesn’t seem very knowledgable on python, hence all of the need help banners on their issues github page.</p>
+<p>Oh well, it is free and works pretty good, so I can’t complain too much.</p>
+<h2 id="grab-speech">Grab Speech</h2>
+<p>Now you have to write your own code to grab speech (which is fine) and you can use <a href="https://wit.ai/docs/http/20141022#streaming-audio">sox</a> per the example on their website. Then ship it off to there servers to figure out what it means.</p>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                                              <img src=https://i.pinimg.com/564x/94/22/fc/9422fc82bb5c347961c465c85cc91599.jpg width=300px>
+                <header id="title-block-header">
+    <h1 class="title">Example Package with Colcon</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">2 Aug 2020</p>
+            </header>
+    <hr>
+<p><em>Note:</em> I am using the <code>zsh</code> shell instead of <code>bash</code>.</p>
+<p>Unfortunately the examples are shitty, overly verbose for no reason, leave stuff out and don’t make sense.</p>
+<ol type="1">
+<li>Source the ros setup file from <code>/opt/ros/.../setup.zsh</code></li>
+<li>Create a workspace (<code>ros2</code>) and a source code folder (<code>ros2/src</code>)</li>
+<li>Move into the workspace</li>
+<li>Clone some example directories into <code>src</code>
+<ol type="1">
+<li>Make sure to check out the correct distro branch</li>
+</ol></li>
+<li>Build with examples <code>colcon</code>, the latest crappy ros build tool</li>
+</ol>
+<pre><code>source /opt/ros/foxy/setup.zsh
+mkdir -p ros2/src
+cd ros2
+git clone https://github.com/ros2/examples src/examples
+cd src/examples
+git checkout $ROS_DISTRO
+cd ../..
+git clone https://github.com/ros2/example_interfaces.git src/example_interfaces
+colcon build --symlink-install</code></pre>
+<p><strong>Note:</strong> The option <code>--symlink-install</code> is very important, it allows to use symlinks instead of copying files to the ROS2 folders during the installation, where possible. Each package in ROS2 must be installed and all the files used by the nodes must be copied into the installation folders. Using symlinks allows you to modify them in your workspace, reflecting the modification during the next executions without the needing to issue a new colcon build command. This is true only for all the files that don’t need to be compiled (Python scripts, configurations, etc.).</p>
+<p>So now you have a directory structure that looks like:</p>
+<pre><code>ros2
+|-bulid
+|-install
+| +-setup.zsh
+|-log
++-src
+  |-examples
+  +-example_interfaces</code></pre>
+<p>Now run <code>colcon test</code> to make sure all is well.</p>
+<p>Now run <code>source install/setup.zsh</code> (best) or alternatively <code>source install/local_setup.zsh</code>. The difference is:</p>
+<ul>
+<li>The <code>local_setup.&lt;ext&gt;</code> script sets up the environment for all package in the prefix path where that script is. It doesn’t include any parent workspaces.</li>
+<li>The <code>setup.&lt;ext&gt;</code> script on the other hand sources the <code>local_setup.&lt;ext&gt;</code> script for <em>all workspaces</em> which were sourced in the environment when this workspace was built. And then it also sources the sibling <code>local_setup.&lt;ext&gt;</code> script.</li>
+</ul>
+<p>Now run a pub/sub, you need some windows (having run <code>source install/setup.zsh</code> in them):</p>
+<ul>
+<li><code>ros2 run examples_rclcpp_minimal_publisher publisher_member_function</code></li>
+<li><code>ros2 run examples_rclcpp_minimal_subscriber subscriber_member_function</code></li>
+<li><code>ros2 run examples_rclpy_minimal_subscriber subscriber_member_function</code></li>
+</ul>
+<p>Notice, there is a mixture of cpp (<code>rclcpp</code>) and python (<code>rclpy</code>) in these … neat!</p>
+<h2 id="args">Args</h2>
+<ul>
+<li>Pass <code>cmake</code> any args: <code>--cmake-args -DCMAKE_PREFIX_PATH=/home/bob/here -DCMAKE_SOMETHING_ELSE</code></li>
+<li>Clean first: <code>--cmake-clean-first</code></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li>Ros2 Tutorial: <a href="https://index.ros.org//doc/ros2/Tutorials/Colcon-Tutorial/">Using Colcon to Build Packages</a></li>
+<li>rosanswers: <a href="https://answers.ros.org/question/292566/what-is-the-difference-between-local_setupbash-and-setupbash/">What is the difference between local_setup.bash and setup.bash</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

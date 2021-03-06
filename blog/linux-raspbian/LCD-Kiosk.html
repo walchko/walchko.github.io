@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../index.html">Home</a>
+              <a class="logo" href="./../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../about.html">About</a>
+              <a class="logo" href="./../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Setting Up an RPi as a Kiosk with the RPi Foundation LCD</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">12 Sept 2018</p>
+            </header>
+    <hr>
+<h2 id="specifications">Specifications</h2>
+<ul>
+<li>800×480 RGB LCD display</li>
+<li>24-bit colour</li>
+<li>Industrial quality: 140-degree viewing angle horizontal, 130-degree viewing angle vertical</li>
+<li>10-point multi-touch touchscreen</li>
+<li>PWM backlight control and power control over I2C interface</li>
+<li>Metal-framed back with mounting points for Raspberry Pi display conversion board and Raspberry Pi</li>
+<li>Backlight lifetime: 20000 hours</li>
+<li>Operating temperature: -20 to +70 degrees centigrade</li>
+<li>Storage temperature: -30 to +80 degrees centigrade</li>
+<li>Contrast ratio: 500</li>
+<li>Average brightness: 250 cd/m2</li>
+<li>Viewing angle (degrees):
+<ul>
+<li>Top - 50</li>
+<li>Bottom - 70</li>
+<li>Left - 70</li>
+<li>Right - 70</li>
+</ul></li>
+<li>Power requirements: 200mA at 5V typical, at maximum brightness.</li>
+</ul>
+<h2 id="assembly">Assembly</h2>
+<p><img src="pics/lcd-assembly.jpg" /></p>
+<h2 id="kiosk-mode-for-lightdm">Kiosk Mode for LightDM</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pi@raspberrypi:~</span> $ cat ~/.config/lxsession/LXDE-pi/autostart</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># turn off power management so screen doesn&#39;t go blank</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">@xset</span> s off</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">@xset</span> <span class="at">-dpms</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">@xset</span> s noblank</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># @matchbox-window-manager &amp;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># @matchbox-keyboard --daemon &amp;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># @chromium-browser --incognito -noerrdialogs --kiosk http://localhost/</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Note, the multiple http&#39;s set multiple tabs</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># BUT kiosk only allows 1 window with no tabs, BUT you can&#39;t accidentally</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># close the browser in kiosk</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ex">@chromium-browser</span> <span class="at">--incognito</span> <span class="at">--kiosk</span> <span class="at">--start-maximized</span>  <span class="at">-noerrdialogs</span> http://pi-hole.local/admin/index.php http://plex.local:8080</span></code></pre></div>
+<p>If you make changes and what them to take effect now:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> service lightdm restart</span></code></pre></div>
+<h1 id="lcd-brightness">LCD Brightness</h1>
+<p><code>root</code> owns it and I want <code>pi</code> to be able to adjust it too. Create a udev rule <code>/etc/udev/rules.d/80-backlight.rules</code>:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">SUBSYSTEM=</span>=<span class="st">&quot;backlight&quot;</span> <span class="va">RUN+=</span><span class="st">&quot;/bin/chmod 0666 /sys/class/backlight/%k/brightness /sys/class/backlight/%k/bl_power&quot;</span></span></code></pre></div>
+<p><code>root</code> will still own it, but anyone can set it to a value between 1-255. I find 50 is really good for inside.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> 50 <span class="op">&gt;</span> /sys/class/backlight/rpi_backlight/brightness</span></code></pre></div>
+<h1 id="rotating-display">Rotating Display</h1>
+<h2 id="simple-flip">Simple Flip</h2>
+<p>Generally you end up with the LCD mounted upside-down because people don’t pay attention to details. Simple solution to flip the LCD is to put <code>lcd_rotate=2</code> in <code>/boot/config.txt</code> and the screen will turn upside-down.</p>
+<h2 id="portrait-view-90-degree-rotation">Portrait View (90 degree rotation)</h2>
+<p>However I wanted to put it into portrait view (90 deg turn):</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">xinput</span> <span class="at">--set-prop</span> <span class="st">&#39;FT5406 memory based driver&#39;</span> <span class="st">&#39;Coordinate Transformation Matrix&#39;</span> 0 1 0 <span class="at">-1</span> 0 1 0 0 1</span></code></pre></div>
+<p>Note, if sshing in do: <code>DISPLAY=:0.0 xinput ...</code></p>
+<ul>
+<li><a href="https://www.raspberrypi.org/forums/viewtopic.php?f=108&amp;t=120793">fixing touch screen</a></li>
+<li><a href="https://www.raspberrypi.org/forums/viewtopic.php?t=172025">final solution</a></li>
+</ul>
+<h1 id="disable-touchscreen">Disable Touchscreen</h1>
+<p>To disable the touchscreen capability do add <code>disable_touchscreen=1</code> to <code>/boot/config.txt</code>.</p>
+<h1 id="nodm-config">nodm Config</h1>
+<p>I disabled the virtual keyboard because it takes up a lot of screen and isn’t really useful (big fingers and small keys). I type one letter every 10 seconds. :)</p>
+<p>The file is located: <code>/home/pi/.xsession</code></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">xset</span> s off</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">xset</span> <span class="at">-dmps</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">xset</span> s noblank</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="bu">exec</span> matchbox-window-manager  <span class="at">-use_titlebar</span> no <span class="kw">&amp;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#exec matchbox-keyboard &amp;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="ex">xinput</span> <span class="at">--set-prop</span> <span class="st">&#39;FT5406 memory based driver&#39;</span> <span class="st">&#39;Coordinate Transformation Matrix&#39;</span> 0 1 0 <span class="at">-1</span> 0 1 0 0 1</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="ex">chromium-browser</span> <span class="at">--incognito</span> <span class="at">-noerrdialogs</span> http://pi-hole.local/admin/index.php http://localhost:8080</span></code></pre></div>
+<h1 id="references">References</h1>
+<ul>
+<li>raspberrypi.org: <a href="https://www.raspberrypi.org/documentation/hardware/display/README.md">display docs</a></li>
+<li>raspberrypi.org: <a href="https://www.raspberrypi.org/documentation/hardware/display/7InchDisplayDrawing-14092015.pdf">mechanical drawings</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

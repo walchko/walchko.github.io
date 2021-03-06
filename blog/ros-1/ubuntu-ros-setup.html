@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../index.html">Home</a>
+              <a class="logo" href="./../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../about.html">About</a>
+              <a class="logo" href="./../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">ROS Setup Using Vanilla Ubuntu Image</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">22 Sept 2019</p>
+            </header>
+    <hr>
+<p>So the <a href="http://wiki.ros.org/Installation/Ubuntu">ros wiki</a> shows that melodic packages are built for Ubuntu and armhf (RPi) automatically. Unfortunately, there are not official raspbian packages, so if you want easy, you have to use Ubuntu.</p>
+<ul>
+<li>Ubuntu server images are <a href="https://wiki.ubuntu.com/ARM/RaspberryPi">here</a> built for the RPi 2/3/3+ (no 4 yet).
+<ul>
+<li>These appear to have user ubuntu and password ubuntu</li>
+</ul></li>
+</ul>
+<p>Install ubuntu mate (18.04 at the time of this writing) from <a href="https://www.raspberrypi.org/downloads/">raspberrypi.org</a>. Unfortunately, they do not allow headless install because they are stupid.</p>
+<ol type="1">
+<li><p>download and burn image to SD card</p></li>
+<li><p>insert SD card, hookup keyboard/mouse/monitor, and power on</p>
+<ol type="1">
+<li>Hey Ubuntu Mate idiots, you do realize that IoT are often headless … right? Thank goodness you don’t support Arduino, otherwise we would have to do the same … thanks a lot for extra complexity … you suck! Oh, this also doesn’t make anything safer or more secure!</li>
+</ol></li>
+<li><p>Then following the ros ubuntu install directions, use a script like below and run: <code>sudo ./install_ros.sh</code> ``` #!/bin/bash # http://wiki.ros.org/melodic/Installation/Ubuntu</p>
+<p>echo “deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main” &gt; /etc/apt/sources.list.d/ros-latest.list apt-key adv –keyserver ‘hkp://keyserver.ubuntu.com:80’ –recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 apt-get update # apt-get install ros-melodic-desktop-full -y # apt-get install ros-melodic-desktop -y apt-get install ros-melodic-ros-base -y rosdep init rosdep update #echo “source /opt/ros/melodic/setup.bash” &gt;&gt; ~/.bashrc #source ~/.bashrc apt-get install python-rosinstall python-rosinstall-generator python-wstool build-essential ```</p></li>
+</ol>
+<h2 id="services">Services</h2>
+<p>Here are some example systemd scripts examples I found online.</p>
+<pre><code>$ cat /etc/systemd/system/roscore.service 
+[Unit]
+After=NetworkManager.service time-sync.target
+[Service]
+Type=forking
+User=ubuntu
+# Start roscore as a fork and then wait for the tcp port to be opened
+# ----------------------------------------------------------------
+# Source all the environment variables, start roscore in a fork
+# Since the service type is forking, systemd doesn&#39;t mark it as
+# &#39;started&#39; until the original process exits, so we have the 
+# non-forked shell wait until it can connect to the tcp opened by
+# roscore, and then exit, preventing conflicts with dependant services
+ExecStart=/bin/sh -c &quot;. /opt/ros/kinetic/setup.sh; . /etc/ubiquity/env.sh; roscore &amp; while ! echo exit | nc localhost 11311 &gt; /dev/null; do sleep 1; done&quot;
+[Install]
+WantedBy=multi-user.target</code></pre>
+<pre><code>$ cat /etc/systemd/system/magni-base.service 
+[Unit]
+Requires=roscore.service
+PartOf=roscore.service
+After=NetworkManager.service time-sync.target roscore.service
+[Service]
+Type=simple
+User=ubuntu
+ExecStart=/usr/sbin/magni-base
+[Install]
+WantedBy=multi-user.target</code></pre>
+<pre><code>$ cat /usr/sbin/magni-base 
+#!/bin/bash
+
+function log() {
+  logger -s -p user.$1 ${@:2}
+}
+
+log info &quot;magni-base: Using workspace setup file /home/ubuntu/catkin_ws/devel/setup.bash&quot;
+source /home/ubuntu/catkin_ws/devel/setup.bash
+
+log_path=&quot;/tmp&quot;
+if [[ ! -d $log_path ]]; then
+  CREATED_LOGDIR=true
+  trap &#39;CREATED_LOGDIR=false&#39; ERR
+    log warn &quot;magni-base: The log directory you specified \&quot;$log_path\&quot; does not exist. Attempting to create.&quot;
+    mkdir -p $log_path 2&gt;/dev/null
+    chown ubuntu:ubuntu $log_path 2&gt;/dev/null
+    chmod ug+wr $log_path 2&gt;/dev/null
+  trap - ERR
+  # if log_path could not be created, default to tmp
+  if [[ $CREATED_LOGDIR == false ]]; then
+    log warn &quot;magni-base: The log directory you specified \&quot;$log_path\&quot; cannot be created. Defaulting to \&quot;/tmp\&quot;!&quot;
+    log_path=&quot;/tmp&quot;
+  fi
+fi
+
+source /etc/ubiquity/env.sh
+log info &quot;magni-base: Launching ROS_HOSTNAME=$ROS_HOSTNAME, ROS_IP=$ROS_IP, ROS_MASTER_URI=$ROS_MASTER_URI, ROS_LOG_DIR=$log_path&quot;
+
+# Punch it.
+export ROS_HOME=$(echo ~ubuntu)/.ros
+export ROS_LOG_DIR=$log_path
+roslaunch magni_demos teleop.launch &amp;
+PID=$!
+
+log info &quot;magni-base: Started roslaunch as background process, PID $PID, ROS_LOG_DIR=$ROS_LOG_DIR&quot;
+echo &quot;$PID&quot; &gt; $log_path/magni-base.pid
+wait &quot;$PID&quot;</code></pre>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

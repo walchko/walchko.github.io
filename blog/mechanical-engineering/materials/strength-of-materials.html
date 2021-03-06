@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                                              <img src=https://i.pinimg.com/564x/7b/f4/85/7bf48549e058725b0e930af390fc7e0d.jpg width=400px>
+                <header id="title-block-header">
+    <h1 class="title">Strength of Materials (or Mechanics of Materials)</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                </header>
+    <hr>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Strength_of_materials">Wikipedia: strength of materials</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Yield_(engineering)">Wikipedia: engineering yield</a></li>
+<li><a href="https://en.wikipedia.org/wiki/List_of_materials_properties#Mechanical_properties">Wikipedia: mechanical properties</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Ultimate_tensile_strength">Wikipedia: ultimate tensile strength</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Elasticity_(physics)">Wikipedia: elasticity</a></li>
+</ul>
+<h2 id="stress">Stress</h2>
+<p>Uniaxial stress is <span class="math inline">$\sigma = \frac{F}{A}$</span> where <span class="math inline"><em>F</em></span> is force (N) and <span class="math inline"><em>A</em></span> is area (<span class="math inline"><em>m</em><sup>2</sup></span>)</p>
+<ul>
+<li>Compressive stress (squash)</li>
+<li>Tensile stress (pull)</li>
+<li>Shear stress (scissors)</li>
+</ul>
+<h2 id="strength-terms">Strength Terms</h2>
+<ul>
+<li>Yield strength: lowest stress that produces permanent deformation</li>
+<li>Compressive strength: compressive stress that leads to failure</li>
+<li>Tensile strength: tensile stress that leads to failure</li>
+<li>Fatigue strength: measure of material strength un cyclic loads</li>
+<li>Impact strength: capability of material to withstand suddenly applied loads and is expressed in terms of energy</li>
+</ul>
+<h2 id="tensile-strength">Tensile Strength</h2>
+<p>Ultimate tensile strength (UTS) is the ability of a material to withstand loads which try to elongate it. A tensile test records a materials engineering stress verse strain. The <strong>highest</strong> point of the stress-strain curve is the UTS.</p>
+<p><img src="tension_test.png" /></p>
+<h1 id="pla-vs-abs">PLA vs ABS</h1>
+<p><strong>ABS</strong> plastic filament stands for acrylonitrile butadiene styrene. It is a sturdy and strong plastic that is oil-based.</p>
+<p><strong>PLA</strong> filament is made from sugarcane and cornstarch which are organic materials called polylactic acid. Unlike ABS, PLA has a crystaline structure (due to sugar and cornstarch) which makes it brittle. Any cracks that form tend to propagate easily. Also, under the right compost conditions, PLA is biodegradable.</p>
+<ul>
+<li>Average tensile strengths of 28.5 MPa for ABS and 56.6 MPa for PLA</li>
+<li>Average elastic moduli of 1807 MPA for ABS and 3368 MPa for PLA
+<ul>
+<li>This is looking at a material’s ability to resist distortion and returning to its original shape <em>after</em> a load is removed</li>
+</ul></li>
+</ul>
+<p>So what you can take away from this is, PLA is stronger, but more brittle (likely to fracture especially under impact loads).</p>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

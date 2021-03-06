@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                                  <img src=pi-zero.jpg width=75.0%>
+        <header id="title-block-header">
+    <h1 class="title">Install Raspberry Pi (RPi) Zero</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">2017-04-30</p>
+            </header>
+    <hr>
+<p>You need to make a couple changes before you put the SD card into the Pi.</p>
+<p>In <code>config.txt</code>, add the following to the bottom:</p>
+<pre><code>dtoverlay=dwc2</code></pre>
+<p>In <code>cmdline.txt</code>, add this right after <code>rootwait</code>:</p>
+<pre><code>modules-load=dwc2,g_ether</code></pre>
+<p>Now put the SD card in the Pi and plug the Pi into your computer with a USB cable.</p>
+<p>To give it access to the internet:</p>
+<ul>
+<li><p>System Preferences</p>
+<p>: -</p>
+<pre><code>       Sharing
+
+       :   -   Share your connection from: WiFi (or Ethernet if you
+               have a wired connection)
+           -   To computers using: RNDIS/Ethernet Gadget
+           -   Then check/select `Internet Sharing` in the service
+               box</code></pre></li>
+</ul>
+<p><strong>Note:</strong> If you already plugged in your Pi to your computer, you will need to reboot the Pi using:</p>
+<pre><code>sudo reboot</code></pre>
+<p>This process sets up a dhcp server for the <code>RNDIS/Ethernet Gadget</code> and assigns it an IP address, then allows it to talk to the internet using WiFi.</p>
+<p>A good resource is <a href="http://www.circuitbasics.com/raspberry-pi-zero-ethernet-gadget/">here</a></p>
+<h2 id="ssh">SSH</h2>
+<p>To enable <code>ssh</code>, go to the <code>/boot</code> directory and create a file called <em>ssh</em>:</p>
+<blockquote>
+<p>touch ssh</p>
+</blockquote>
+<p>This will tell raspbian to enable it on boot.</p>
+<h2 id="bypass-known_hosts">Bypass known_hosts</h2>
+<p>Since all RPi's hostname are raspberrypi.local, it <strong>sucks</strong> when you try to connect to a new one and you get the man-in-the-middle attack warning.</p>
+<p>You can disable the check with:</p>
+<pre><code>ssh -o UserKnownHostsFile=/dev/null pi@raspberrypi.local</code></pre>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

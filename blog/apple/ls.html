@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../index.html">Home</a>
+              <a class="logo" href="./../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../about.html">About</a>
+              <a class="logo" href="./../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Making The Command Line Useful</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">2016-06-09</p>
+            </header>
+    <hr>
+<h2 id="ls">ls</h2>
+<p>OSX uses BSD <code>ls</code> utility. To make the command more appealing, use:</p>
+<pre><code>alias ls=&#39;ls -G&#39;</code></pre>
+<p>where:</p>
+<blockquote>
+<p>G: colorized output a: displays files beginning with a <code>.</code> h: human readable</p>
+</blockquote>
+<p>To edit the colors you can:</p>
+<pre><code>export CLICOLOR=1
+export LSCOLORS=ExFxCxDxBxegedabagacad</code></pre>
+<p>The string is 22 characters long and comprised of 11 two letter orders as described below.</p>
+<p>The color designators are as follows:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Ltr</th>
+<th style="text-align: left;">Color</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">a</td>
+<td style="text-align: left;">black</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">b</td>
+<td style="text-align: left;">red</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">c</td>
+<td style="text-align: left;">green</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">d</td>
+<td style="text-align: left;">brown</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">e</td>
+<td style="text-align: left;">blue</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">f</td>
+<td style="text-align: left;">magenta</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">g</td>
+<td style="text-align: left;">cyan</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">h</td>
+<td style="text-align: left;">light grey</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">A</td>
+<td style="text-align: left;">bold black, usually shows up as dark grey</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">B</td>
+<td style="text-align: left;">bold red</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">C</td>
+<td style="text-align: left;">bold green</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">D</td>
+<td style="text-align: left;">bold brown, usually shows up as yellow</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">E</td>
+<td style="text-align: left;">bold blue</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F</td>
+<td style="text-align: left;">bold magenta</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">G</td>
+<td style="text-align: left;">bold cyan</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">H</td>
+<td style="text-align: left;">bold light grey; looks like bright white</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">x</td>
+<td style="text-align: left;">default foreground or background</td>
+</tr>
+</tbody>
+</table>
+<p>The order of the attributes are as follows:</p>
+<ol type="1">
+<li>directory</li>
+<li>symbolic link</li>
+<li>socket</li>
+<li>pipe</li>
+<li>executable</li>
+<li>block special</li>
+<li>character special</li>
+<li>executable with setuid bit set</li>
+<li>executable with setgid bit set</li>
+<li>directory writable to others, with sticky bit</li>
+<li>directory writable to others, without sticky bit</li>
+</ol>
+<h2 id="homebrew">Homebrew</h2>
+<p>You can also use the GNU coreutils (which contains ls) however, not sure this is such a great idea because it contains a lot of other utilities too. You could probably install it and just do:</p>
+<pre><code>alias ls=&#39;/usr/local/opt/coreutils/libexec/gnubin/ls&#39;</code></pre>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

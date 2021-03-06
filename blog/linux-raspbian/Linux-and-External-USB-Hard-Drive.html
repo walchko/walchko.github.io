@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../index.html">Home</a>
+              <a class="logo" href="./../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../about.html">About</a>
+              <a class="logo" href="./../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">External USB Drive Setup (Reformat and Automount)</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">28 Nov 2015</p>
+            </header>
+    <hr>
+<p>This is for booting off an SD card, but having an external HD for mass storage.</p>
+<p>However, there is a reference below for booting from a USB3 HD on a RPi 4 and not having an SD card installed.</p>
+<h2 id="references">References:</h2>
+<ul>
+<li><a href="http://devtidbits.com/2013/03/21/using-usb-external-hard-disk-flash-drives-with-to-your-raspberry-pi/">Using external HD with RPi</a></li>
+<li><a href="https://dottheslash.wordpress.com/2011/11/29/deleting-all-partitions-on-a-usb-drive/">Deleting partitions on a drive</a></li>
+<li><a href="https://www.tomshardware.com/news/boot-raspberry-pi-from-usb,39782.html">Tom’s hardware: how to boot from HD on RPi 3/4</a></li>
+</ul>
+<h2 id="setup">Setup</h2>
+<p>First connect the drive and find it:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pi@calculon</span> ~ $ sudo fdisk <span class="at">-l</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Disk</span> /dev/mmcblk0: 15.9 GB, 15931539456 bytes</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">4</span> heads, 16 sectors/track, 486192 cylinders, total 31116288 sectors</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Units</span> = sectors of 1 <span class="pp">*</span> 512 = 512 bytes</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Sector</span> size <span class="er">(</span><span class="ex">logical/physical</span><span class="kw">)</span><span class="bu">:</span> 512 bytes / 512 bytes</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="ex">I/O</span> size <span class="er">(</span><span class="ex">minimum/optimal</span><span class="kw">)</span><span class="bu">:</span> 512 bytes / 512 bytes</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ex">Disk</span> identifier: 0x000981cb</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="ex">Device</span> Boot      Start         End      Blocks   Id  System</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ex">/dev/mmcblk0p1</span>            8192      122879       57344    c  W95 FAT32 <span class="er">(</span><span class="ex">LBA</span><span class="kw">)</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ex">/dev/mmcblk0p2</span>          122880    31116287    15496704   83  Linux</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ex">WARNING:</span> GPT <span class="er">(</span><span class="ex">GUID</span> Partition Table<span class="kw">)</span> <span class="ex">detected</span> on <span class="st">&#39;/dev/sda&#39;</span>! The util fdisk doesn<span class="st">&#39;t support GPT. Use GNU Parted.</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="st">Disk /dev/sda: 640.1 GB, 640135028736 bytes</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="st">255 heads, 63 sectors/track, 77825 cylinders, total 1250263728 sectors</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="st">Units = sectors of 1 * 512 = 512 bytes</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="st">Sector size (logical/physical): 512 bytes / 512 bytes</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="st">I/O size (minimum/optimal): 512 bytes / 512 bytes</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="st">Disk identifier: 0x00000000</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="st">Device Boot      Start         End      Blocks   Id  System</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="st">/dev/sda1               1  1250263727   625131863+  ee  GPT</span></span></code></pre></div>
+<p>Make a mount point and mount and/or unmount the drive.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pi@calculon</span> ~ $ sudo mkdir /mnt/usbdrive</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pi@calculon</span> ~ $ sudo mount /dev/sda1 /mnt/usbdrive</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pi@calculon</span> ~ $ sudo umount /dev/sda1</span></code></pre></div>
+<h2 id="deleting-existing-partitions">Deleting Existing Partitions</h2>
+<p>First we need to delete the old partitions on the disk:</p>
+<ol type="1">
+<li>Open a terminal</li>
+<li>Type <code>sudo fdisk -l</code> and note your USB drive letter.</li>
+<li>Type <code>sudo fdisk /dev/sdx</code> (replacing x with your drive letter)</li>
+<li>Type <code>d</code> to proceed to delete a partition</li>
+<li>Type <code>1</code> to select the 1st partition and press enter</li>
+<li>Type <code>d</code> to proceed to delete another partition (fdisk should automatically select the second partition)</li>
+</ol>
+<p>Next we need to create the new partition.</p>
+<ol type="1">
+<li>Type <code>n</code> to make a new partition</li>
+<li>Type <code>p</code> to make this partition primary and press enter</li>
+<li>Type <code>1</code> to make this the first partition and then press enter</li>
+<li>Press <code>enter</code> to accept the default first cylinder</li>
+<li>Press <code>enter</code> again to accept the default last cylinder</li>
+<li>Type <code>w</code> to write the new partition information to the USB key</li>
+</ol>
+<p>The last step is to create the fat filesystem.</p>
+<ol type="1">
+<li>Type <code>sudo mkfs.ext4 /dev/sdx1</code> (replacing x with your drive letter)</li>
+</ol>
+<h2 id="formatting-disk">Formatting Disk</h2>
+<p>Starting with a USB hard drive 640GB formated in OSX’s HSF+, I needed to change it to ext4:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pi@calculon</span> ~ $ sudo parted /dev/sda</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">GNU</span> Parted 2.3</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Using</span> /dev/sda</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Welcome</span> to GNU Parted! Type <span class="st">&#39;help&#39;</span> to view a list of commands.</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">parted</span><span class="kw">)</span> <span class="ex">p</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Model:</span> Maxtor OneTouch <span class="er">(</span><span class="ex">scsi</span><span class="kw">)</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Disk</span> /dev/sda: 640GB</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ex">Sector</span> size <span class="er">(</span><span class="ex">logical/physical</span><span class="kw">)</span><span class="bu">:</span> 512B/512B</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">Partition</span> Table: gpt</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="ex">Number</span>  Start  End  Size  File system  Name  Flags</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">parted</span><span class="kw">)</span> <span class="ex">mkpart</span> primary ext4 1 640000</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">parted</span><span class="kw">)</span> <span class="ex">p</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="ex">Model:</span> Maxtor OneTouch <span class="er">(</span><span class="ex">scsi</span><span class="kw">)</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="ex">Disk</span> /dev/sda: 640GB</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="ex">Sector</span> size <span class="er">(</span><span class="ex">logical/physical</span><span class="kw">)</span><span class="bu">:</span> 512B/512B</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="ex">Partition</span> Table: gpt</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="ex">Number</span>  Start   End    Size   File system  Name     Flags</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="ex">1</span>      1049kB  640GB  640GB               primary</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="kw">(</span><span class="ex">parted</span><span class="kw">)</span> <span class="ex">quit</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="ex">Information:</span> You may need to update /etc/fstab.</span></code></pre></div>
+<p><strong>Note</strong> in the <code>mkpart</code> line, the start and stop locations are in MB.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pi@calculon</span> ~ $ sudo mkfs.ext4 /dev/sda1 <span class="at">-L</span> Calculon</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mke2fs</span> 1.42.5 <span class="er">(</span><span class="ex">29-Jul-2012</span><span class="kw">)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Filesystem</span> label=Calculon</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">OS</span> type: Linux</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Block</span> size=4096 <span class="er">(</span><span class="va">log=</span>2<span class="kw">)</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Fragment</span> size=4096 <span class="er">(</span><span class="va">log=</span>2<span class="kw">)</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="va">Stride=</span>0 <span class="ex">blocks,</span> Stripe width=0 blocks</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="ex">39067648</span> inodes, 156249856 blocks</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ex">7812492</span> blocks <span class="er">(</span><span class="ex">5.00%</span><span class="kw">)</span> <span class="ex">reserved</span> for the super user</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ex">First</span> data block=0</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ex">Maximum</span> filesystem blocks=0</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="ex">4769</span> block groups</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ex">32768</span> blocks per group, 32768 fragments per group</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="ex">8192</span> inodes per group</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="ex">Superblock</span> backups stored on blocks:</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="ex">32768,</span> 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="ex">4096000,</span> 7962624, 11239424, 20480000, 23887872, 71663616, 78675968,</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="ex">102400000</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="ex">Allocating</span> group tables: done</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="ex">Writing</span> inode tables: done</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="ex">Creating</span> journal <span class="er">(</span><span class="ex">32768</span> blocks<span class="kw">)</span><span class="bu">:</span> done</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="ex">Writing</span> superblocks and filesystem accounting information: done</span></code></pre></div>
+<p>Now mount the drive and double check it:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pi@calculon</span> ~ $ sudo mount /dev/sda1 /mnt/usbdrive</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pi@calculon</span> ~ $ df <span class="at">-h</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Filesystem</span>      Size  Used Avail Use% Mounted on</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="ex">rootfs</span>           15G  3.7G   11G  27% /</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">/dev/root</span>        15G  3.7G   11G  27% /</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">devtmpfs</span>        112M     0  112M   0% /dev</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">tmpfs</span>            24M  240K   23M   2% /run</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ex">tmpfs</span>           5.0M     0  5.0M   0% /run/lock</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="ex">tmpfs</span>            47M     0   47M   0% /run/shm</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ex">/dev/mmcblk0p1</span>   56M  9.8M   47M  18% /boot</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="ex">/dev/sda1</span>       587G   70M  557G   1% /mnt/usbdrive</span></code></pre></div>
+<p>Fix permissions:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pi@calculon</span> ~ $ sudo chown pi:pi /mnt/usbdrive</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pi@calculon</span> ~ $ sudo chmod 777 /mnt/usbdrive</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pi@calculon</span> ~ $ sudo ls /mnt/usbdrive <span class="at">-alh</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">total</span> 24K</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxrwxrwx</span> 3 pi   pi   4.0K Dec 14 20:45 .</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ex">drwxr-xr-x</span> 3 root root 4.0K Dec 14 18:24 ..</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="ex">drwx------</span> 2 root root  16K Dec 14 20:45 lost+found</span></code></pre></div>
+<h2 id="automounting">Automounting</h2>
+<p>Add the following to fstab so it mounts on boot.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> nano /etc/fstab</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/dev/sda1</span> /mnt/usbdisk auto defaults,user 0 1</span></code></pre></div>
+<p>This sets the file system to <code>auto</code> and <code>user</code> enables write permissions for all users. The 0 is for debugging and 1 is for a file system check at boot. You can test this out by:</p>
+<p>For a USB thumb drive formated in <code>vfat</code> you can do:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># &lt;file system&gt; &lt;mount pt&gt;     &lt;type&gt;   &lt;options&gt;                  &lt;dump&gt;  &lt;pass&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">/dev/sda1</span>       /mnt/usbdisk    auto    auto,user,uid=1000,gid=1000  0       2</span></code></pre></div>
+<p>Since I leave the usb drive in all the time, I have the option <code>auto</code> to always mount it. When the drive is mounted, user <code>pi</code> has ownership with the <code>uid</code> and <code>gid</code> options. How do you find the user/grp id?:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pi@calculon</span> /mnt $ id <span class="at">-u</span> pi</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ex">1000</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pi@calculon</span> /mnt $ id <span class="at">-g</span> pi</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ex">1000</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ex">pi@calculon</span> /mnt $ id pi</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="va">uid=</span>1000<span class="kw">(</span><span class="ex">pi</span><span class="kw">)</span> <span class="va">gid=</span>1000<span class="kw">(</span><span class="ex">pi</span><span class="kw">)</span> <span class="va">groups=</span>1000<span class="kw">(</span><span class="ex">pi</span><span class="kw">)</span><span class="ex">,4</span><span class="er">(</span><span class="ex">adm</span><span class="kw">)</span><span class="ex">,20</span><span class="er">(</span><span class="ex">dialout</span><span class="kw">)</span><span class="ex">,24</span><span class="er">(</span><span class="ex">cdrom</span><span class="kw">)</span><span class="ex">,27</span><span class="er">(</span><span class="fu">sudo</span><span class="kw">)</span><span class="ex">,</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="ex">29</span><span class="er">(</span><span class="ex">audio</span><span class="kw">)</span><span class="ex">,44</span><span class="er">(</span><span class="ex">video</span><span class="kw">)</span><span class="ex">,46</span><span class="er">(</span><span class="ex">plugdev</span><span class="kw">)</span><span class="ex">,60</span><span class="er">(</span><span class="ex">games</span><span class="kw">)</span><span class="ex">,100</span><span class="er">(</span><span class="fu">users</span><span class="kw">)</span><span class="ex">,101</span><span class="er">(</span><span class="ex">input</span><span class="kw">)</span><span class="ex">,108</span><span class="er">(</span><span class="ex">netdev</span><span class="kw">)</span><span class="ex">,</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="ex">999</span><span class="er">(</span><span class="ex">spi</span><span class="kw">)</span><span class="ex">,998</span><span class="er">(</span><span class="ex">i2c</span><span class="kw">)</span><span class="ex">,997</span><span class="er">(</span><span class="ex">gpio</span><span class="kw">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> mount <span class="at">-a</span></span></code></pre></div>
+<h2 id="swap-partition-on-hard-drive">Swap Partition on Hard Drive</h2>
+<p>Don’t ever make a swap partition on the sd card … it is too slow and will reduce the card’s life span.</p>
+<ol type="1">
+<li>Create a partition for swap on say <code>/dev/sda2</code> following the method above, then exit <code>parted</code>.</li>
+<li>Use <code>mkswap /dev/sda2</code> to set it up.</li>
+<li>Edit <code>/etc/fstab</code> and add the following line: <code>/dev/sda2 none swap sw 0 0</code></li>
+<li>Get rid of RPi’s file base swap by removing the packages: <code>sudo apt-get remove dphy-swapfile</code></li>
+<li>Make sure swap is working: <code>swapon -s</code>:</li>
+</ol>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pi@calculon</span> ~ $ swapon <span class="at">-s</span> Filename Type Size Used Priority /dev/sda2</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">partition</span> 4295676 0 <span class="at">-1</span></span></code></pre></div>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../index.html">Home</a>
+              <a class="logo" href="./../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../about.html">About</a>
+              <a class="logo" href="./../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Github API v3</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                </header>
+    <hr>
+<ul>
+<li>List user public repos: <code>curl https://api.github.com/users/walchko/repos</code></li>
+<li>List org public repos: <code>curl https://api.github.com/orgs/momsfriendlyrobotcompany/repos</code></li>
+<li>Get a specific repo: <code>curl https://api.github.com/repos/momsfriendlyrobotcompany/gecko</code></li>
+</ul>
+<h2 id="example">Example</h2>
+<pre><code> kevin@dalek tmp $ curl https://api.github.com/repos/momsfriendlyrobotcompany/gecko
+{
+  &quot;id&quot;: 165568726,
+  &quot;node_id&quot;: &quot;MDEwOlJlcG9zaXRvcnkxNjU1Njg3MjY=&quot;,
+  &quot;name&quot;: &quot;gecko&quot;,
+  &quot;full_name&quot;: &quot;MomsFriendlyRobotCompany/gecko&quot;,
+  &quot;private&quot;: false,
+  &quot;owner&quot;: {
+    &quot;login&quot;: &quot;MomsFriendlyRobotCompany&quot;,
+    &quot;id&quot;: 29009590,
+    &quot;node_id&quot;: &quot;MDEyOk9yZ2FuaXphdGlvbjI5MDA5NTkw&quot;,
+    &quot;avatar_url&quot;: &quot;https://avatars2.githubusercontent.com/u/29009590?v=4&quot;,
+    &quot;gravatar_id&quot;: &quot;&quot;,
+    &quot;url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany&quot;,
+    &quot;html_url&quot;: &quot;https://github.com/MomsFriendlyRobotCompany&quot;,
+    &quot;followers_url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany/followers&quot;,
+    &quot;following_url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany/following{/other_user}&quot;,
+    &quot;gists_url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany/gists{/gist_id}&quot;,
+    &quot;starred_url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany/starred{/owner}{/repo}&quot;,
+    &quot;subscriptions_url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany/subscriptions&quot;,
+    &quot;organizations_url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany/orgs&quot;,
+    &quot;repos_url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany/repos&quot;,
+    &quot;events_url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany/events{/privacy}&quot;,
+    &quot;received_events_url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany/received_events&quot;,
+    &quot;type&quot;: &quot;Organization&quot;,
+    &quot;site_admin&quot;: false
+  },
+  &quot;html_url&quot;: &quot;https://github.com/MomsFriendlyRobotCompany/gecko&quot;,
+  &quot;description&quot;: &quot;:lizard: gecko&quot;,
+  &quot;fork&quot;: false,
+  &quot;url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko&quot;,
+  &quot;forks_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/forks&quot;,
+  &quot;keys_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/keys{/key_id}&quot;,
+  &quot;collaborators_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/collaborators{/collaborator}&quot;,
+  &quot;teams_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/teams&quot;,
+  &quot;hooks_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/hooks&quot;,
+  &quot;issue_events_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/issues/events{/number}&quot;,
+  &quot;events_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/events&quot;,
+  &quot;assignees_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/assignees{/user}&quot;,
+  &quot;branches_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/branches{/branch}&quot;,
+  &quot;tags_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/tags&quot;,
+  &quot;blobs_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/git/blobs{/sha}&quot;,
+  &quot;git_tags_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/git/tags{/sha}&quot;,
+  &quot;git_refs_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/git/refs{/sha}&quot;,
+  &quot;trees_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/git/trees{/sha}&quot;,
+  &quot;statuses_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/statuses/{sha}&quot;,
+  &quot;languages_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/languages&quot;,
+  &quot;stargazers_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/stargazers&quot;,
+  &quot;contributors_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/contributors&quot;,
+  &quot;subscribers_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/subscribers&quot;,
+  &quot;subscription_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/subscription&quot;,
+  &quot;commits_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/commits{/sha}&quot;,
+  &quot;git_commits_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/git/commits{/sha}&quot;,
+  &quot;comments_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/comments{/number}&quot;,
+  &quot;issue_comment_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/issues/comments{/number}&quot;,
+  &quot;contents_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/contents/{+path}&quot;,
+  &quot;compare_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/compare/{base}...{head}&quot;,
+  &quot;merges_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/merges&quot;,
+  &quot;archive_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/{archive_format}{/ref}&quot;,
+  &quot;downloads_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/downloads&quot;,
+  &quot;issues_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/issues{/number}&quot;,
+  &quot;pulls_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/pulls{/number}&quot;,
+  &quot;milestones_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/milestones{/number}&quot;,
+  &quot;notifications_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/notifications{?since,all,participating}&quot;,
+  &quot;labels_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/labels{/name}&quot;,
+  &quot;releases_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/releases{/id}&quot;,
+  &quot;deployments_url&quot;: &quot;https://api.github.com/repos/MomsFriendlyRobotCompany/gecko/deployments&quot;,
+  &quot;created_at&quot;: &quot;2019-01-14T00:06:09Z&quot;,
+  &quot;updated_at&quot;: &quot;2019-04-07T13:27:08Z&quot;,
+  &quot;pushed_at&quot;: &quot;2019-04-07T13:27:07Z&quot;,
+  &quot;git_url&quot;: &quot;git://github.com/MomsFriendlyRobotCompany/gecko.git&quot;,
+  &quot;ssh_url&quot;: &quot;git@github.com:MomsFriendlyRobotCompany/gecko.git&quot;,
+  &quot;clone_url&quot;: &quot;https://github.com/MomsFriendlyRobotCompany/gecko.git&quot;,
+  &quot;svn_url&quot;: &quot;https://github.com/MomsFriendlyRobotCompany/gecko&quot;,
+  &quot;homepage&quot;: &quot;&quot;,
+  &quot;size&quot;: 436,
+  &quot;stargazers_count&quot;: 0,
+  &quot;watchers_count&quot;: 0,
+  &quot;language&quot;: &quot;C++&quot;,
+  &quot;has_issues&quot;: true,
+  &quot;has_projects&quot;: false,
+  &quot;has_downloads&quot;: true,
+  &quot;has_wiki&quot;: true,
+  &quot;has_pages&quot;: false,
+  &quot;forks_count&quot;: 0,
+  &quot;mirror_url&quot;: null,
+  &quot;archived&quot;: false,
+  &quot;disabled&quot;: false,
+  &quot;open_issues_count&quot;: 0,
+  &quot;license&quot;: {
+    &quot;key&quot;: &quot;mit&quot;,
+    &quot;name&quot;: &quot;MIT License&quot;,
+    &quot;spdx_id&quot;: &quot;MIT&quot;,
+    &quot;url&quot;: &quot;https://api.github.com/licenses/mit&quot;,
+    &quot;node_id&quot;: &quot;MDc6TGljZW5zZTEz&quot;
+  },
+  &quot;forks&quot;: 0,
+  &quot;open_issues&quot;: 0,
+  &quot;watchers&quot;: 0,
+  &quot;default_branch&quot;: &quot;master&quot;,
+  &quot;organization&quot;: {
+    &quot;login&quot;: &quot;MomsFriendlyRobotCompany&quot;,
+    &quot;id&quot;: 29009590,
+    &quot;node_id&quot;: &quot;MDEyOk9yZ2FuaXphdGlvbjI5MDA5NTkw&quot;,
+    &quot;avatar_url&quot;: &quot;https://avatars2.githubusercontent.com/u/29009590?v=4&quot;,
+    &quot;gravatar_id&quot;: &quot;&quot;,
+    &quot;url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany&quot;,
+    &quot;html_url&quot;: &quot;https://github.com/MomsFriendlyRobotCompany&quot;,
+    &quot;followers_url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany/followers&quot;,
+    &quot;following_url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany/following{/other_user}&quot;,
+    &quot;gists_url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany/gists{/gist_id}&quot;,
+    &quot;starred_url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany/starred{/owner}{/repo}&quot;,
+    &quot;subscriptions_url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany/subscriptions&quot;,
+    &quot;organizations_url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany/orgs&quot;,
+    &quot;repos_url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany/repos&quot;,
+    &quot;events_url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany/events{/privacy}&quot;,
+    &quot;received_events_url&quot;: &quot;https://api.github.com/users/MomsFriendlyRobotCompany/received_events&quot;,
+    &quot;type&quot;: &quot;Organization&quot;,
+    &quot;site_admin&quot;: false
+  },
+  &quot;network_count&quot;: 0,
+  &quot;subscribers_count&quot;: 1
+}</code></pre>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

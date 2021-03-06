@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../index.html">Home</a>
+              <a class="logo" href="./../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../about.html">About</a>
+              <a class="logo" href="./../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">OpenGL on the Raspberry Pi</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">23 Mar 2020</p>
+            </header>
+    <hr>
+<p><img src="https://upload.wikimedia.org/wikipedia/en/thumb/3/3f/OpenGL_ES_logo_%28Nov14%29.svg/320px-OpenGL_ES_logo_%28Nov14%29.svg.png" /></p>
+<p>The GPU bundled with <strong>Raspberry Pi 4</strong> is a VideoCore VI capable of OpenGL ES 3.2, a significant step above the VideoCore IV present in <strong>Raspberry Pi 3</strong> which could only do OpenGL ES 2.0.</p>
+<p>The raspbian comes with OpenGL installed to <code>/opt/vc</code> from the <code>libraspberrypi-dev</code> package.</p>
+<pre><code>$ apt show libraspberrypi-dev
+Package: libraspberrypi-dev
+Version: 1.20200212-1
+Priority: optional
+Section: libdevel
+Source: raspberrypi-firmware
+Maintainer: Serge Schneider &lt;serge@raspberrypi.org&gt;
+Installed-Size: 3,369 kB
+Depends: libraspberrypi0 (= 1.20200212-1)
+Homepage: https://github.com/raspberrypi/firmware
+Download-Size: 408 kB
+APT-Manual-Installed: yes
+APT-Sources: http://archive.raspberrypi.org/debian buster/main armhf Packages
+Description: EGL/GLES/OpenVG/etc. libraries for the Raspberry Pi&#39;s VideoCore IV (headers)
+ This package contains headers and other development files for implementations
+ of EGL, OpenGL ES, OpenVG, OpenWF Composition, and others for the Raspberry
+ Pi&#39;s VideoCore IV multimedia processor.</code></pre>
+<pre><code>$ ls /opt/vc
+bin  include  lib  src
+
+$ ls /opt/vc/include
+bcm_host.h  EGL  GLES  GLES2  IL  interface  KHR  vcinclude  VG  WF</code></pre>
+<h1 id="references">References</h1>
+<ul>
+<li><a href="https://www.raspberrypi.org/blog/vc4-and-v3d-opengl-drivers-for-raspberry-pi-an-update/">Raspberrypi.com: OpenGl Drivers Update</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

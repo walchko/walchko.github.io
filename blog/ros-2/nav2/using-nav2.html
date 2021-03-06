@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Using Navigation2 in ROS2</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">19 Jan 2021</p>
+            </header>
+    <hr>
+<h1 id="overview-of-nav2">Overview of Nav2</h1>
+<ul>
+<li>Install
+<ul>
+<li><code>sudo apt install ros-foxy-navigation2</code></li>
+<li><code>sudo apt install ros-foxy-nav2-bringup</code></li>
+</ul></li>
+<li>Behavior Trees replace <code>move_base</code>
+<ul>
+<li>XML governs complex behavior</li>
+<li>Supposed to be more efficient and more human understandable for complex problems than a FSM would be</li>
+</ul></li>
+<li>Planners and recovery are new ROS actions
+<ul>
+<li>ported <code>navfn</code> (global) planner, Dijkstra or A*</li>
+<li>ported <code>dwb</code> (local) planners</li>
+</ul></li>
+<li>Lifecycle nodes add stability
+<ul>
+<li>Built in state machine in the node: unconfigured, inactive, active, initialized</li>
+</ul></li>
+<li><code>lifecycle_manager</code> controls startup and shutdown of nav2 nodes</li>
+<li><code>amcl</code> map/localizer (particle filter) and <code>map_server</code> ported</li>
+<li><code>nav2_core</code> has a plugin interface</li>
+<li><code>nav2_bringup</code> makes it easy to start the nav2 stack with good defaults … good reference</li>
+</ul>
+<h2 id="sensor-fusion">Sensor Fusion</h2>
+<p>Still learning …</p>
+<ul>
+<li>Install
+<ul>
+<li><code>sudo apt install ros-foxy-robot-localization</code></li>
+</ul></li>
+<li>Frames
+<ul>
+<li><code>earth (ECEF)</code> -&gt; <code>map</code> -&gt; <code>odom</code> -&gt; <code>base_link</code> -&gt; <code>sensor(s)</code></li>
+<li><code>\map</code> is the world frame (obviously world-fixed frame)
+<ul>
+<li><code>\odom</code> is child of <code>\map</code> is a world-fixed frame
+<ul>
+<li><code>\base_link</code> is a child of <code>\odom</code> and rigidly attached to robot</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>Transforms
+<ul>
+<li><code>\map</code> -&gt; <code>\odom</code> handelled by the <code>\tf</code> via a positioning system (localization, mapping, SLAM)
+<ul>
+<li>Accounts for the robot’s global pose</li>
+<li>Tracks the offset needed to compensate for overall sensor drift as the robot drives around, allowing the robot to more robustly create global path plans</li>
+<li>Is discontinuous (jumps around)</li>
+<li>Is published by the AMCL node (or any other global pose estimators!)</li>
+</ul></li>
+<li><code>\odom</code> -&gt; <code>\base_link</code> handeled by the <code>odom</code> message
+<ul>
+<li>Accounts for the robot’s local pose</li>
+<li>Is best for local obstacle avoidance</li>
+<li>Is continuous, but drifts over time due to sensor drift</li>
+<li>Is published by the odometry node (which should be taking into account encoders, IMUs and other sensors like laser scan matching nodes, etc.)</li>
+</ul></li>
+</ul></li>
+<li><code>robot_localization</code> (see docs folder)
+<ul>
+<li>Has EKF and UKF nonlinear estimators
+<ul>
+<li><code>ekf_localization_node</code> and <code>ukf_localization_node</code></li>
+<li><code>navsat_transform_node</code> for GPS integration</li>
+</ul></li>
+<li>All state estimation nodes track the 15-dimensional state of the vehicle: (X, Y, Z, roll, pitch, yaw, <span class="math inline"><em>Ẋ</em></span>, <span class="math inline"><em>Ẏ</em></span>, <span class="math inline"><em>Ż</em></span>, <span class="math inline">$\dot{roll}$</span>, <span class="math inline">$\dot{pitch}$</span>, <span class="math inline">$\dot{yaw}$</span>, <span class="math inline">$\ddot{X}$</span>, <span class="math inline">$\ddot{Y}$</span>, <span class="math inline">$\ddot{Z}$</span>)</li>
+<li><code>nav_msgs/Odomety</code>
+<ul>
+<li>All pose data is between <code>frame_id</code> and the <code>world_frame</code> (typically <code>map</code> or <code>odom</code>)</li>
+<li>Alll twist data is transformed into <code>base_link_frame</code> (typically <code>base_link</code>)</li>
+</ul></li>
+<li><code>sensor_msgs/Imu</code>
+<ul>
+<li>expects all messages in ENU, NED not supported (TBD)</li>
+</ul></li>
+</ul></li>
+<li>Things to remeber
+<ul>
+<li>IMU Orientation [<a href="http://docs.ros.org/en/melodic/api/robot_localization/html/preparing_sensor_data.html#">ref</a>]
+<ul>
+<li>Orientation: x (forward), y (left), z (up) <img src="https://miro.medium.com/max/501/1*MboVHLeGk0e4bVoJdjUdmg.png" /></li>
+<li><strong>Not all</strong> AHRS software follow this convention</li>
+<li>IMU right side up on a flat surface will measure <strong>+</strong> 9.81 m/s/s on z-axis</li>
+<li>Roll <strong>+</strong> 90 deg (left side up), will measure <strong>+</strong> 9.81 m/s/s on y-axis</li>
+<li>Pitch <strong>+</strong> 90 deg (front down), will measure <strong>-</strong> 9.81 m/s/s on x-axis</li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="behavior-trees">Behavior Trees</h2>
+<p>This is a generic overview</p>
+<ul>
+<li>Status: SUCCESS, FAILURE, or RUNNING</li>
+<li>Control Nodes
+<ul>
+<li>Sequence (-&gt;): SUCCESS if all children return SUCCESS</li>
+<li>Fallback (?): SUCCESS when first child returns SUCCESS</li>
+<li>Parallel (double arrow): SUCCESS if any child returns SUCCESS</li>
+<li>Decorator (<span class="math inline">$\del$</span>): modifies the return state of a child</li>
+</ul></li>
+<li>Execution Nodes
+<ul>
+<li>Leaves in the tree</li>
+<li>Action: executes an action/command</li>
+<li>Condition: checks for some kind of condition</li>
+</ul></li>
+</ul>
+<h1 id="references">References</h1>
+<ul>
+<li><a href="https://navigation.ros.org/index.html">nav2 docs</a></li>
+<li>github: <a href="https://github.com/SteveMacenski/slam_toolbox">SLAM toolbox</a></li>
+<li>github: <a href="https://github.com/cra-ros-pkg"><code>robot_localization</code></a>
+<ul>
+<li><a href="https://github.com/cra-ros-pkg/robot_localization/blob/kinetic-devel/params/ekf_template.yaml">example params for ekf</a></li>
+</ul></li>
+<li>ROSCon 2019: <a href="https://vimeo.com/378682188">Navigation 2 Overview</a></li>
+<li>REP-0105: <a href="https://www.ros.org/reps/rep-0105.html">Coordinate Frames</a></li>
+<li><a href="https://www.behaviortree.dev">Behavior Tree</a></li>
+<li><a href="https://medium.com/@leofaf/sparkfun-9dof-razor-imu-m0-with-ros-d9e1c5209f9e">9DoF Razor IMU with ROS (Part I)</a></li>
+<li><a href="https://towardsdatascience.com/designing-ai-agents-behaviors-with-behavior-trees-b28aa1c3cf8a">Designing AI Agents’ Behaviors with Behavior Trees</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

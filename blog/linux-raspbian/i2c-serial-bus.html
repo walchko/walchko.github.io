@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../index.html">Home</a>
+              <a class="logo" href="./../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../about.html">About</a>
+              <a class="logo" href="./../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">I2C Serial Bus</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">2017-02-05</p>
+            </header>
+    <hr>
+<p>First we need to enable i2c with adding <code>dtparam=i2c_arm=on</code> to <code>/boot/config.txt</code>. This defaults the system to 100kHz, but you can change to 400kHz (if your sensors support it) by adding:</p>
+<pre><code>dtparam=i2c_arm=on,i2c_arm_baudrate=400000</code></pre>
+<p>Now <code>/dev/i2c-0</code> and <code>/dev/i2c-1</code> should exist. <strong>However</strong>, <code>/dev/i2c-0</code> is for other things like the VideoCore (PiCamera), so you can’t use it. Also, it isn’t enabled, but if you do, at boot time you can mess things up because Raspbian is using it for other things.</p>
+<p>If you want to see what is on the i2c bus, install the <code>i2c-tools</code> using:</p>
+<pre><code>sudo apt install i2c-tools</code></pre>
+<p>Now to explore the i2c bus try:</p>
+<pre><code>    [kevin@raspberrypi ~]$ sudo i2cdetect -y 1
+         0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+    00:          -- -- -- -- -- -- -- -- -- -- -- -- --
+    10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    70: -- -- -- -- -- -- -- --</code></pre>
+<p>To have these load at boot, add them to <code>/etc/modules</code>:</p>
+<pre><code>pi@bender ~/github/soccer2 $ sudo more /etc/modules
+# /etc/modules: kernel modules to load at boot time.
+#
+# This file contains the names of kernel modules that should be loaded
+# at boot time, one per line. Lines beginning with &quot;#&quot; are ignored.
+# Parameters can be specified after the module name.
+
+snd-bcm2835
+i2c-dev
+i2c-bcm2708</code></pre>
+<pre><code>sudo apt install python-smbus
+sudo apt install i2c-tools</code></pre>
+<pre><code>    pi@bender ~/github/soccer2 $ sudo i2cdetect -y 1
+         0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+    00:          -- -- -- -- -- -- -- -- -- -- -- -- --
+    10: -- -- -- -- -- -- -- -- 18 -- -- -- -- -- 1e --
+    20: 20 -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    30: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    40: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    60: -- -- -- -- -- -- -- -- -- 69 -- -- -- -- -- --
+    70: 70 -- -- -- -- -- -- --</code></pre>
+<p>This shows what things are on the I2C bus: 0x18 (accelerometers), 0x1e (forget?), and 0x69 (gyros).</p>
+<p>Next, get Adafruit’s python code which has I2C code for a variety of things:</p>
+<pre><code>git clone https://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code.git</code></pre>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

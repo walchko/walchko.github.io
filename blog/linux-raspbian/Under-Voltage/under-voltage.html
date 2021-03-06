@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Determining if the Raspberry Pi is Under-voltage</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">1 Mar 2018</p>
+            </header>
+    <hr>
+<pre><code>$ vcgencmd get_throttled
+throttled=0x50005</code></pre>
+<p>Okay, the bits in this number represent:</p>
+<ul>
+<li>0: under-voltage</li>
+<li>1: arm frequency capped</li>
+<li>2: currently throttled</li>
+<li>16: under-voltage has occurred</li>
+<li>17: arm frequency capped has occurred</li>
+<li>18: throttling has occurred</li>
+</ul>
+<p>under-voltage occurs when voltage drops below 4.63V. The Pi is throttled arm frequency capped occurs with temp &gt; 80’C over-temperature occurs with temp &gt; 85’C. The Pi is throttled</p>
+<p>Throttling removes turbo mode, which reduces core voltage, and sets arm and gpu frequencies to non-turbo value. Capping just limits the arm frequency (somewhere between 600MHz and 1200MHz) to try to avoid throttling. If you are throttled and not under-voltage then you can assume over-temperature. (confirm with <code>vcgencmd</code> measure_temp).</p>
+<p>So <code>0x50005</code> means you are currently under-voltage and throttled. If you want to be able to support this use case without throttling you will need a better power supply.</p>
+<p>This shows we are not undervoltaged, but frequency is capped:</p>
+<pre><code>$ vcgencmd get_throttled
+throttled=0x20000</code></pre>
+<h2 id="turn-off-notification">Turn off Notification</h2>
+<pre><code>sudo nano /boot/config.txt
+Add below, save and close the file.
+
+# Disable under-voltage warning
+avoid_warnings=1
+Reboot to apply the change.
+
+sudo reboot</code></pre>
+<h1 id="references">References</h1>
+<ul>
+<li><a href="https://www.raspberrypi.org/forums/viewtopic.php?f=63&amp;t=147781&amp;start=50#p972790">Reference</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Machine Screws</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">2017-01-16</p>
+            </header>
+    <hr>
+<p><img src="machine_screws.jpg" /></p>
+<p>A good table of sizes is <a href="TapDrillSizes.pdf">here</a></p>
+<ul>
+<li><a href="metric-conversions.pdf">metric converstion</a></li>
+</ul>
+<h1 id="standard">Standard</h1>
+<p><strong>STANDARD</strong> thread size refers to a thread measurement system commonly used in the United States called the ‘Unified Thread Standard’. This system uses two numbers to identify thread size, for example: 1/4-20 or 2-56.</p>
+<pre><code>[screw diameter]-[threads per inch]</code></pre>
+<p>The <strong>first number</strong> references to the major diameter of the screw (major diameter is the outside diameter of the screw measuring on the outside of the threads, minor diameter is the smaller shank diameter, measuring between the threads). Larger screw sizes typically use a fraction in inches to identify major diameter, so a 1/4-20 screw has a major diameter of 1/4". Smaller screw sizes will use a 'gauge' number such as 0, 1, 2, 3, 4, 6, 8, 10, etc., to identify major diameter.</p>
+<p>The following formulas can be used to translate the gauge number into decimal inches or metric (or use cross reference chart below).</p>
+<p>Where <span class="math inline"><em>n</em></span> equals gauge number:</p>
+<p><span class="math inline"><em>n</em> * 0.013 + 0.06=</span> major diameter in decimal inches<br />
+<span class="math inline"><em>n</em> * 0.3302 + 1.524=</span> major diameter in millimeters</p>
+<p>The <strong>second number</strong> (80, 72, 64, 56, 32, 20, etc.) specifies the number of threads over a distance of 1" (25.4mm).</p>
+<p>So using the above information, a standard thread size of 2-56 has a major diameter of:</p>
+<p>0.086" (2 * 0.013 + 0.060)<br />
+2.184mm (2 * 0.3302 + 1.524)</p>
+<p>with 56 threads per 1" (25.4mm).</p>
+<p>Following is a cross reference showing: gauge / decimal / metric:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Guage </th>
+<th>Decimal  </th>
+<th>Metric </th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0.060"</td>
+<td>1.524mm</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>0.073"</td>
+<td>1.854mm</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>0.086"</td>
+<td>2.180mm</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>0.099"</td>
+<td>2.515mm</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>0.112"</td>
+<td>2.845mm</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>0.125"</td>
+<td>3.175mm</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>0.138"</td>
+<td>3.505mm</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>0.164"</td>
+<td>4.166mm</td>
+</tr>
+</tbody>
+</table>
+<h1 id="metric">Metric</h1>
+<p><strong>METRIC</strong> thread sizes also use two numbers to identify thread size, for example: M3.5 x 0.60. The first number describes the major diameter in millimeters. The second number designates the pitch of the thread, which is basically the distance from any one point on a thread to a corresponding point on the next thread. Following is a cross reference chart showing how pitch relates to threads per inch (25.4mm):</p>
+<table>
+<thead>
+<tr class="header">
+<th>Threads per inch (TPI)</th>
+<th>Pitch</th>
+<th>TPI</th>
+<th>Pitch</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.30mm</td>
+<td>84 3/4</td>
+<td>0.60mm</td>
+<td>42 1/4</td>
+</tr>
+<tr class="even">
+<td>0.35mm</td>
+<td>72 1/2</td>
+<td>0.70mm</td>
+<td>36 1/4</td>
+</tr>
+<tr class="odd">
+<td>0.40mm</td>
+<td>63 1/2</td>
+<td>0.75mm</td>
+<td>33 3/4</td>
+</tr>
+<tr class="even">
+<td>0.45mm</td>
+<td>56 1/2</td>
+<td>0.80mm</td>
+<td>31 3/4</td>
+</tr>
+<tr class="odd">
+<td>0.50mm</td>
+<td>50 3/4</td>
+<td>   </td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

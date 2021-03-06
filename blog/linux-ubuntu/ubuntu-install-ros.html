@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../index.html">Home</a>
+              <a class="logo" href="./../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../about.html">About</a>
+              <a class="logo" href="./../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Ubuntu Install RPi3</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">6 Oct 2019</p>
+            </header>
+    <hr>
+<h2 id="install">Install</h2>
+<p>The arm 64-bit version has <code>ssh</code> setup by default and requires a password reset.</p>
+<ul>
+<li>Get Raspberry Pi 3 or 4 (64-bit ARM) no config <a href="https://ubuntu.com/download/raspberry-pi">server image</a> version 20.04 LTS or later
+<ul>
+<li>username: <code>ubuntu</code><br />
+</li>
+<li>password: <code>ubuntu</code> (which you have to change on login or ssh)</li>
+</ul></li>
+</ul>
+<h2 id="setup">Setup</h2>
+<p>Unfortunately Ubuntu is setup my an idiot who doesn’t use computers, especially headless servers.</p>
+<ul>
+<li>Change hostname: <code>sudo hostnamectl set-hostname &lt;new name&gt;</code> <code>~$ hostnamectl         Static hostname: ros              Icon name: computer             Machine ID: 32f369a042bd4d3e9f1f793aa46ad688                Boot ID: f1856754c054460394bdba31faa79e0f       Operating System: Ubuntu 18.04.3 LTS                 Kernel: Linux 4.15.0-1048-raspi2           Architecture: arm64</code></li>
+<li>Avahi: <code>sudo apt-get install avahi-daemon</code></li>
+<li>Remove stupid cloud init stuff: <code>sudo dpkg-reconfigure cloud-init     sudo apt-get purge cloud-init     sudo mv /etc/cloud/ ~/; sudo mv /var/lib/cloud/ ~/cloud-lib</code></li>
+<li>Disable services that wanted that
+<ul>
+<li>First figure them out with: <code>sudo systemctl show -p WantedBy network-online.target</code></li>
+<li>Disable with: <code>sudo systemctl disable &lt;service&gt;</code>
+<ul>
+<li>I stopped <code>iscsid.service</code> and <code>open-iscsi.service</code> which are san service things I don’t use</li>
+<li>I kept <code>nmbd.service</code> for avahi</li>
+</ul></li>
+</ul></li>
+<li>samba:</li>
+</ul>
+<pre><code>sudo apt install samba
+sudo ufw allow &#39;Samba&#39;
+sudo cp /etc/samba/smb.conf{,.backup}
+# update smb.conf
+sudo systemctl restart nmbd</code></pre>
+<ul>
+<li>add user with: <code>sudo smbpasswd -a ubuntu</code></li>
+<li>add user home:</li>
+</ul>
+<pre><code>[ubuntu]
+   comment = Home Directories
+   browseable = yes
+   read only = no
+   create mask = 0700
+   directory mask = 0700
+   valid users = %S
+   path=/home/%S</code></pre>
+<h3 id="networking">Networking</h3>
+<p>Create the following with: <code>sudo nano /etc/netplan/01-netcfg.yaml</code></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">network</span><span class="kw">:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at"> </span><span class="fu">version</span><span class="kw">:</span><span class="at"> </span><span class="dv">2</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at"> </span><span class="fu">renderer</span><span class="kw">:</span><span class="at"> networkd</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="at"> </span><span class="fu">ethernets</span><span class="kw">:</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">   </span><span class="fu">eth0</span><span class="kw">:</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="at">     </span><span class="fu">dhcp4</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="at">     </span><span class="fu">dhcp6</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="at">     </span><span class="fu">optional</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="at"> </span><span class="fu">wifis</span><span class="kw">:</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="at">   </span><span class="fu">wlan0</span><span class="kw">:</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="at">     </span><span class="fu">dhcp4</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="at">     </span><span class="fu">dhcp6</span><span class="kw">:</span><span class="at"> </span><span class="ch">yes</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="at">     </span><span class="fu">access-points</span><span class="kw">:</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="at">       </span><span class="fu">&quot;your-wifi-name&quot;</span><span class="kw">:</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="at">         </span><span class="fu">password</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;your-wifi-password&quot;</span></span></code></pre></div>
+<p>Enable with <code>sudo netplan apply</code> and reboot</p>
+<p>If there is boot delay, you can do: <code>systemctl mask systemd-networkd-wait-online.service</code></p>
+<h1 id="ros2">ROS2</h1>
+<ul>
+<li>Setup locale: <code>sudo locale-gen en_US en_US.UTF-8     sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8     export LANG=en_US.UTF-8</code></li>
+<li>Setup sources: <code>sudo apt update &amp;&amp; sudo apt install curl gnupg2 lsb-release     curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -     sudo sh -c 'echo "deb [arch=amd64,arm64] http://packages.ros.org/ros2/ubuntu `lsb_release -cs` main" &gt; /etc/apt/sources.list.d/ros2-latest.list'</code></li>
+<li>Install ROS packages: <code>sudo apt update     sudo apt install ros-dashing-ros-base</code></li>
+</ul>
+<h1 id="references">References</h1>
+<ul>
+<li><a href="http://emanual.robotis.com/docs/en/platform/turtlebot3/ros2/#setup">turtlebot3 emanual</a></li>
+<li><a href="https://index.ros.org/doc/ros2/Installation/Dashing/Linux-Install-Debians/">ROS2 install dasing on linux</a></li>
+<li><a href="https://linuxize.com/post/how-to-install-and-configure-samba-on-ubuntu-18-04/">Add samba server to ubuntu</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

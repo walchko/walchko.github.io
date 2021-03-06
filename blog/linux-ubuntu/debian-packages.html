@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../index.html">Home</a>
+              <a class="logo" href="./../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../about.html">About</a>
+              <a class="logo" href="./../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Debian Packages</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                </header>
+    <hr>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Syntax</th>
+<th>Description</th>
+<th>Exmaple</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>dpkg -i {.deb package}</code></td>
+<td>Install the package</td>
+<td><code>dpkg -i zip_2.31-3_i386.deb</code></td>
+</tr>
+<tr class="even">
+<td><code>dpkg -i {.deb package}</code></td>
+<td>Upgrade package if it is installed else install a fresh copy of package</td>
+<td><code>dpkg -i zip_2.31-3_i386.deb</code></td>
+</tr>
+<tr class="odd">
+<td><code>dpkg -R {Directory-name}</code></td>
+<td>Install all packages recursively from directory</td>
+<td><code>dpkg -R /tmp/downloads</code></td>
+</tr>
+<tr class="even">
+<td><code>dpkg -r {package}</code></td>
+<td>Remove/Delete an installed package except configuration files</td>
+<td><code>dpkg -r zip</code></td>
+</tr>
+<tr class="odd">
+<td><code>dpkg -P {package}</code></td>
+<td>Remove/Delete everything including configuration files</td>
+<td><code>dpkg -P apache-perl</code></td>
+</tr>
+<tr class="even">
+<td><code>dpkg -l</code></td>
+<td>List all installed packages, along with package version and short description</td>
+<td><code>dpkg -l</code> <code>dpkg -l | less</code> <code>dpkg -l '*apache*'</code> <code>dpkg -l | grep -i 'sudo'</code></td>
+</tr>
+<tr class="odd">
+<td><code>dpkg -l {package}</code></td>
+<td>List individual installed packages, along with package version and short description</td>
+<td><code>dpkg -l apache-perl</code></td>
+</tr>
+<tr class="even">
+<td><code>dpkg -L {package}</code></td>
+<td>Find out files are provided by the installed package i.e. list where files were installed</td>
+<td><code>dpkg -L apache-perl</code> <code>dpkg -L perl</code></td>
+</tr>
+<tr class="odd">
+<td><code>dpkg -c {.Deb package}</code></td>
+<td>List files provided (or owned) by the package i.e. List all files inside debian .deb package file, very useful to find where files would be installed</td>
+<td><code>dpkg -c dc_1.06-19_i386.deb</code></td>
+</tr>
+<tr class="even">
+<td><code>dpkg -S {/path/to/file}</code></td>
+<td>Find what package owns the file i.e. find out what package does file belong</td>
+<td><code>dpkg -S /bin/netstat</code> <code>dpkg -S /sbin/ippool</code></td>
+</tr>
+<tr class="odd">
+<td><code>dpkg -p {package}</code></td>
+<td>Display details about package package group, version, maintainer, Architecture, display depends packages, description etc</td>
+<td><code>dpkg -p lsof</code></td>
+</tr>
+<tr class="even">
+<td><code>dpkg -s {package} | grep</code></td>
+<td>Status Find out if Debian package is installed or not (status)</td>
+<td><code>dpkg -s lsof | grep Status</code></td>
+</tr>
+</tbody>
+</table>
+<p>Here I have built a test package that installs everything to <code>./tmp</code></p>
+<pre><code>kevin@dalek:~/github/gecko/build$ dpkg -c gecko-0.2.0-Linux.deb
+drwxr-xr-x root/root         0 2019-04-06 10:10 ./tmp/
+drwxr-xr-x root/root         0 2019-04-06 10:10 ./tmp/bin/
+-rwxr-xr-x root/root     32280 2019-04-06 10:10 ./tmp/bin/echo
+-rwxr-xr-x root/root     32280 2019-04-06 10:10 ./tmp/bin/logserver
+drwxr-xr-x root/root         0 2019-04-06 10:10 ./tmp/include/
+drwxr-xr-x root/root         0 2019-04-06 10:10 ./tmp/include/gecko/
+-rw-r--r-- root/root       439 2019-04-01 20:18 ./tmp/include/gecko/ascii.hpp
+-rw-r--r-- root/root      2265 2019-04-01 20:18 ./tmp/include/gecko/color.hpp
+-rw-r--r-- root/root      1294 2019-04-01 20:18 ./tmp/include/gecko/event.hpp
+-rw-r--r-- root/root       281 2019-03-17 16:56 ./tmp/include/gecko/exceptions.hpp
+-rw-r--r-- root/root       934 2019-04-01 19:28 ./tmp/include/gecko/gecko.hpp
+-rw-r--r-- root/root      1267 2019-04-01 20:18 ./tmp/include/gecko/geckocpp.hpp
+-rw-r--r-- root/root       209 2019-04-01 20:18 ./tmp/include/gecko/helpers.hpp
+-rw-r--r-- root/root      1351 2019-04-01 20:18 ./tmp/include/gecko/log.hpp
+drwxr-xr-x root/root         0 2019-04-06 10:10 ./tmp/include/gecko/msgpack/
+-rw-r--r-- root/root      4608 2019-04-01 20:27 ./tmp/include/gecko/msgpack/common.hpp
+-rw-r--r-- root/root      1360 2019-04-02 18:17 ./tmp/include/gecko/msgpack/msgpack_pub_sub.hpp
+-rw-r--r-- root/root       710 2019-03-31 16:50 ./tmp/include/gecko/msgpack/msgs.hpp
+-rw-r--r-- root/root     11369 2019-04-01 20:49 ./tmp/include/gecko/msgpack/serialization.hpp
+-rw-r--r-- root/root      4096 2019-04-01 20:30 ./tmp/include/gecko/msgpack/stamped.hpp
+-rw-r--r-- root/root       788 2019-04-01 20:18 ./tmp/include/gecko/msocket.hpp
+-rw-r--r-- root/root       586 2019-04-01 20:17 ./tmp/include/gecko/network.hpp
+-rw-r--r-- root/root      1082 2019-04-01 20:17 ./tmp/include/gecko/node.hpp
+-rw-r--r-- root/root       424 2019-04-01 20:17 ./tmp/include/gecko/signals.hpp
+-rw-r--r-- root/root      2406 2019-04-01 20:17 ./tmp/include/gecko/time.hpp
+-rw-r--r-- root/root      2713 2019-04-01 21:02 ./tmp/include/gecko/transport.hpp
+-rw-r--r-- root/root       751 2019-04-01 20:17 ./tmp/include/gecko/zmq_rep_req.hpp
+-rw-r--r-- root/root      1646 2019-04-01 20:14 ./tmp/include/gecko/zmq_sub_pub.hpp
+drwxr-xr-x root/root         0 2019-04-06 10:10 ./tmp/lib/
+-rw-r--r-- root/root    220968 2019-04-06 10:10 ./tmp/lib/libgecko.so</code></pre>
+<h1 id="references">References</h1>
+<ul>
+<li><a href="https://www.cyberciti.biz/howto/question/linux/dpkg-cheat-sheet.php">dpkg command</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

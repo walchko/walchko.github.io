@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Analog-to-Digital Conversion</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">2016-04-17</p>
+            </header>
+    <hr>
+<p><img src="MCP3008_MCP3208.jpg" /></p>
+<p>Even though I have an MCP3208, which is a 12b ADC, I only get 10b of resolution out of these. Need to figure out why. They both <em>appeared</em> to work the same with no advantage either way.</p>
+<h2 id="kernel-overlay">Kernel Overlay</h2>
+<p>Setup of the overlay to load at boot:</p>
+<pre><code>sudo pico /boot/config.txt
+dtparam=spi=on
+dtoverlay=mcp3008:spi0-0-present</code></pre>
+<p>Then using the polling C code below:</p>
+<pre><code>root@rpi3:~/mcp3008-poll# ./mcp3008-poll -d0 0
+
+(use ctrl-c to stop)
+
+ADC                0
+Read  1036000:   621  ^C
+
+Summary
+  Elapsed: 56.93 seconds
+    Reads: 1037028
+     Rate: 18215.51 Hz</code></pre>
+<h2 id="python">Python</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Import SPI library (for hardware SPI) and MCP3008 library.</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> Adafruit_GPIO.SPI <span class="im">as</span> SPI</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> Adafruit_MCP3008</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Hardware SPI configuration:</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>SPI_PORT   <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>SPI_DEVICE <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>mcp <span class="op">=</span> Adafruit_MCP3008.MCP3008(spi<span class="op">=</span>SPI.SpiDev(SPI_PORT, SPI_DEVICE))</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;Reading MCP3008 values, press Ctrl-C to quit...&#39;</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Print nice channel column headers.</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;| </span><span class="sc">{0:&gt;4}</span><span class="st"> | </span><span class="sc">{1:&gt;4}</span><span class="st"> | </span><span class="sc">{2:&gt;4}</span><span class="st"> | </span><span class="sc">{3:&gt;4}</span><span class="st"> | </span><span class="sc">{4:&gt;4}</span><span class="st"> | </span><span class="sc">{5:&gt;4}</span><span class="st"> | </span><span class="sc">{6:&gt;4}</span><span class="st"> | </span><span class="sc">{7:&gt;4}</span><span class="st"> |&#39;</span>.<span class="bu">format</span>(<span class="op">*</span><span class="bu">range</span>(<span class="dv">8</span>)))</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;-&#39;</span> <span class="op">*</span> <span class="dv">57</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Main program loop.</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Read all the ADC channel values in a list.</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    values <span class="op">=</span> [<span class="dv">0</span>]<span class="op">*</span><span class="dv">8</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">8</span>):</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># The read_adc function will get the value of the specified channel (0-7).</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        values[i] <span class="op">=</span> mcp.read_adc(i)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Print the ADC values.</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;| </span><span class="sc">{0:&gt;4}</span><span class="st"> | </span><span class="sc">{1:&gt;4}</span><span class="st"> | </span><span class="sc">{2:&gt;4}</span><span class="st"> | </span><span class="sc">{3:&gt;4}</span><span class="st"> | </span><span class="sc">{4:&gt;4}</span><span class="st"> | </span><span class="sc">{5:&gt;4}</span><span class="st"> | </span><span class="sc">{6:&gt;4}</span><span class="st"> | </span><span class="sc">{7:&gt;4}</span><span class="st"> |&#39;</span>.<span class="bu">format</span>(<span class="op">*</span>values))</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pause for half a second.</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="fl">0.5</span>)</span></code></pre></div>
+<h1 id="references">References</h1>
+<ul>
+<li><a href="https://github.com/adafruit/Adafruit_Python_MCP3008">Adafruit MCP3008</a></li>
+<li><a href="http://www.jumpnowtek.com/rpi/Using-mcp3008-ADCs-with-Raspberry-Pis.html">MCP3008 Overlay</a></li>
+<li><a href="https://github.com/scottellis/mcp3008-poll">C Program to poll overlay</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

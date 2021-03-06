@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">PCB Design Tips</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                </header>
+    <hr>
+<p>Some of these tips are geared towards <a href="http://kicad-pcb.org">KiCad</a></p>
+<h2 id="layout">Layout</h2>
+<ul>
+<li>If possible, put all parts on one side of the board</li>
+<li>Use 0.025" or 0.050" grid spacing</li>
+<li>User the square pad on a footprint to mark the polarity, i.e., make all square pads either ground or power</li>
+<li>If possible, have data lines run left-to-right on one side of a board and have them run top-to-bottom on the other. This helps to reduce cross talk. Put another way, have your signal lines running in different directions on different layers of the board</li>
+<li>Distance between traces: 0.010" - 0.007"</li>
+<li>Avoid traces that turn 90 degrees, always curve them</li>
+<li>For debugging, make signal pads easily accessible to debugging</li>
+<li>Keep power and control grounds separate</li>
+<li>Keep digital and analog grounds separate
+<ul>
+<li>Probably want to have a filter on the analog ground, especially if you cannot keep them separate</li>
+</ul></li>
+<li>When you test continuity, be <strong>aware</strong> that a good connection should have &lt; 1 ohm of resistance. However, it will still beep with &gt; 1 ohm of resistance which really indicates a cold solder joint. This joint <em>will</em> fail at some point</li>
+<li>Choosing components the same size as the trace will reduce impedance matching issues</li>
+<li>Separate analog and digital ground planes</li>
+</ul>
+<p><img src="analog-digital-plane.png" /></p>
+<h2 id="multilayer-pcb">Multilayer PCB</h2>
+<p><img src="4-layer-pcb.png" /></p>
+<ul>
+<li>Place high frequency traces over a solid ground plane</li>
+<li>Use vias connect components with power and ground in the shortest path possible</li>
+<li>Layout of the layers:
+<ul>
+<li><strong>Layer 1:</strong> High frequency components</li>
+<li><strong>Layer 2:</strong> Ground plane</li>
+<li><strong>Layer 3:</strong> Power plane made as large as possilbe to reduce impediance</li>
+<li><strong>Layer 4:</strong> Other lower frequency parts</li>
+</ul></li>
+</ul>
+<h2 id="power">Power</h2>
+<ul>
+<li>Avoid daisy chaining part’s power together; instead, make power rails and branch each part off of the main</li>
+<li>Watchout for vias breaking up power/ground plane and causing:
+<ul>
+<li>Power forced through narrow routes, making hot spots on the PCB
+<ul>
+<li>Simlar to running high current through small traces</li>
+</ul></li>
+<li>Return path must travel farther around lots of vias and creating large ground loop
+<ul>
+<li>Analogy: rivers create choke points where lots of traffic must cross via a bridge</li>
+</ul></li>
+</ul></li>
+<li>Make power traces larger to handle in-rush currents</li>
+<li>Always use a ground pour or ground plane</li>
+<li>Long power lines act as antennas and pick up RF noise. Use capacitors to filter the noise out and place as close to the IC power pin as possible
+<ul>
+<li>Slow frequency noise: 1-10 uF</li>
+<li>Medium noise: 0.1-1 uF</li>
+<li>High Frequency noise: 0.001-0.1uF</li>
+</ul></li>
+</ul>
+<h3 id="high-power">High Power</h3>
+<ul>
+<li><p>copper weights of 1oz or 2oz carrying currents in the mA to tens of amps range are typically sufficient</p></li>
+<li><p>When doing high power PCBs, plan to handle shorts with things like fuzes</p></li>
+<li><p>For high current applications, like feeding motors/actuators, put capacitors as close to the motor/actuator as possible and use 10uF-100uF as buffers</p></li>
+<li><p>Traces widths (use the calculator in KiCad):</p>
+<table>
+<thead>
+<tr class="header">
+<th>Width [in]</th>
+<th>Width [mm]</th>
+<th>Amps</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.010</td>
+<td>0.254</td>
+<td>0.3A</td>
+</tr>
+<tr class="even">
+<td>0.015</td>
+<td>0.381</td>
+<td>0.4A</td>
+</tr>
+<tr class="odd">
+<td>0.020</td>
+<td>0.508</td>
+<td>0.7A</td>
+</tr>
+<tr class="even">
+<td>0.025</td>
+<td>0.635</td>
+<td>1.0A</td>
+</tr>
+<tr class="odd">
+<td>0.050</td>
+<td>1.27</td>
+<td>2.0A</td>
+</tr>
+<tr class="even">
+<td>0.100</td>
+<td>2.54</td>
+<td>4.0A</td>
+</tr>
+<tr class="odd">
+<td>0.150</td>
+<td>3.81</td>
+<td>6.0A</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>User copper pours to move lots of current for power and ground:</p></li>
+</ul>
+<p><img src="high-power-copper-pours-pcb.png" /></p>
+<h1 id="references">References</h1>
+<ul>
+<li><a href="https://www.protoexpress.com/blog/best-high-speed-pcb-routing-practices/">11 Best High-Speed PCB Routing Practices</a></li>
+<li><a href="https://www.tempoautomation.com/blog/the-best-high-current-pcb-design-tips/">The Best High Current PCB Design Tips</a></li>
+<li><a href="https://www.microtype.io/high-power-pcb-design-tips-tricks/">High Power PCB Design Tips &amp; Tricks</a></li>
+<li>TI Application Note: <a href="slva959a.pdf">Best Practices for Board Layout of Motor Drivers</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../index.html">Home</a>
+              <a class="logo" href="./../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../about.html">About</a>
+              <a class="logo" href="./../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Determine Raspbian Version Info</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">2017-01-07</p>
+            </header>
+    <hr>
+<p>Some of the ways to get info on your system are</p>
+<pre><code>pi@fry ~ $ uname -a
+Linux fry 4.9.43-v7+ #1026 SMP Wed Aug 16 22:35:51 BST 2017 armv7l GNU/Linux</code></pre>
+<pre><code>pi@fry ~ $ cat /etc/issue
+Raspbian GNU/Linux 9 \n \l</code></pre>
+<pre><code>pi@fry ~ $ cat /etc/os-release
+PRETTY_NAME=&quot;Raspbian GNU/Linux 9 (stretch)&quot;
+NAME=&quot;Raspbian GNU/Linux&quot;
+VERSION_ID=&quot;9&quot;
+VERSION=&quot;9 (stretch)&quot;
+ID=raspbian
+ID_LIKE=debian
+HOME_URL=&quot;http://www.raspbian.org/&quot;
+SUPPORT_URL=&quot;http://www.raspbian.org/RaspbianForums&quot;
+BUG_REPORT_URL=&quot;http://www.raspbian.org/RaspbianBugs&quot;</code></pre>
+<pre><code>pi@fry ~ $ lsb_release -da
+No LSB modules are available.
+Distributor ID: Raspbian
+Description:    Raspbian GNU/Linux 9.1 (stretch)
+Release:    9.1
+Codename:   stretch</code></pre>
+<pre><code>pi@fry ~ $ hostnamectl
+ Static hostname: fry
+       Icon name: computer
+      Machine ID: 7bece7e7fb154e8d97398443dc8bc1ae
+         Boot ID: fdd8c91cbb7148138f7b0e830f626d6b
+Operating System: Raspbian GNU/Linux 9 (stretch)
+          Kernel: Linux 4.9.43-v7+
+    Architecture: arm</code></pre>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

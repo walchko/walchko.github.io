@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                                              <img src=pi-hole-logo.png>
+                <header id="title-block-header">
+    <h1 class="title">Pi-Hole, Home Network Advertisement Blocker</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">21 July 2018</p>
+            </header>
+    <hr>
+<p>Website: <a href="https://pi-hole.net/">Pi-Hole</a></p>
+<h2 id="install">Install</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-sSL</span> https://install.pi-hole.net <span class="kw">|</span> <span class="fu">bash</span></span></code></pre></div>
+<h2 id="pihole-command"><code>pihole</code> Command</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pi@pi-hole</span> ~ $ pihole <span class="at">--help</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Usage:</span> pihole [options]</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Example:</span> <span class="st">&#39;pihole -w -h&#39;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Add</span> <span class="st">&#39;-h&#39;</span> after specific commands for more information on usage</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Whitelist/Blacklist</span> Options:</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-w,</span> whitelist       Whitelist domain<span class="er">(</span><span class="ex">s</span><span class="kw">)</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-b,</span> blacklist       Blacklist domain<span class="er">(</span><span class="ex">s</span><span class="kw">)</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-wild,</span> wildcard     Blacklist domain<span class="er">(</span><span class="ex">s</span><span class="kw">)</span><span class="ex">,</span> and all its subdomains</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>                        <span class="ex">Add</span> <span class="st">&#39;-h&#39;</span> for more info on whitelist/blacklist usage</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="ex">Debugging</span> Options:</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-d,</span> debug           Start a debugging session</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                        <span class="ex">Add</span> <span class="st">&#39;-a&#39;</span> to enable automated debugging</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-f,</span> flush           Flush the Pi-hole log</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-r,</span> reconfigure     Reconfigure or Repair Pi-hole subsystems</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-t,</span> tail            View the live output of the Pi-hole log</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="ex">Options:</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-a,</span> admin           Admin Console options</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>                        <span class="ex">Add</span> <span class="st">&#39;-h&#39;</span> for more info on admin console usage</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-c,</span> chronometer     Calculates stats and displays to an LCD</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>                        <span class="ex">Add</span> <span class="st">&#39;-h&#39;</span> for more info on chronometer usage</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-g,</span> updateGravity   Update the list of ad-serving domains</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-h,</span> <span class="at">--help,</span> help    Show this help dialog</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-l,</span> logging         Specify whether the Pi-hole log should be used</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>                        <span class="ex">Add</span> <span class="st">&#39;-h&#39;</span> for more info on logging usage</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-q,</span> query           Query the adlists for a specified domain</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>                        <span class="ex">Add</span> <span class="st">&#39;-h&#39;</span> for more info on query usage</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-up,</span> updatePihole   Update Pi-hole subsystems</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="ex">-v,</span> version         Show installed versions of Pi-hole, Admin Console <span class="kw">&amp;</span> <span class="ex">FTL</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>                        <span class="ex">Add</span> <span class="st">&#39;-h&#39;</span> for more info on version usage</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="ex">uninstall</span>           Uninstall Pi-hole from your system</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="ex">status</span>              Display the running status of Pi-hole subsystems</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  <span class="bu">enable</span>              Enable Pi-hole subsystems</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="ex">disable</span>             Disable Pi-hole subsystems</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>                        <span class="ex">Add</span> <span class="st">&#39;-h&#39;</span> for more info on disable usage</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="ex">restartdns</span>          Restart Pi-hole subsystems</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  <span class="ex">checkout</span>            Switch Pi-hole subsystems to a different Github branch</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>                        <span class="ex">Add</span> <span class="st">&#39;-h&#39;</span> for more info on checkout usage</span></code></pre></div>
+<h2 id="update">Update</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pihole</span> <span class="at">-up</span></span></code></pre></div>
+<h2 id="service">Service</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> service pihole-FTL start <span class="kw">|</span> <span class="ex">restart</span> <span class="kw">|</span> <span class="ex">stop</span></span></code></pre></div>
+<h2 id="web-interface">Web Interface</h2>
+<p><img src="web-interface.png" /></p>
+<p>Just point a browser at: http://pi.hole/admin/</p>
+<p>From here you play with various settings, add sites to blacklist/whitelist, etc.</p>
+<h1 id="network-setup">Network Setup</h1>
+<p>I have my Google Wifi (which is my dhcp server) supply my pi-hole with a static address and set it as the default DNS for everything on the network.</p>
+<h1 id="crap">Crap!</h1>
+<p>You can repair things if they go wonky with: <code>pihole -r</code></p>
+<p>When I played around with Pi 3, Pi Zero W, and finally Pi Zero, if I moved the SD card between these pi’s everything <em>but</em> pi-hole worked. There seems to be something HW specific … so I had to do <code>pihole -r</code> to repair it. It could have been something else I did, but I am not sure, I was testing a bunch of stuff to see performance.</p>
+<p>If everything is really bad, you can uninstall with: <code>pihole uninstall</code></p>
+<h1 id="warning">Warning</h1>
+<p>So I originally installed this on a RPi 3 and then moved the SD card to a Pi Zero. The web interface uses Nodejs which is built for ARM7, but the zero is ARM6 so you have to install a suitable node version. I had trouble fixing it, so I uninstalled and reinstalled it.</p>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

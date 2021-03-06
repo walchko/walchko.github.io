@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                                              <img src=ssh.jpg width=200px>
+                <header id="title-block-header">
+    <h1 class="title">Secure Shell (ssh)</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">2012-09-10</p>
+            </header>
+    <hr>
+<table>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th>Example</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ssh</td>
+<td>ssh <a href="mailto:user@email" class="email">user@email</a></td>
+<td>login to a computer</td>
+</tr>
+<tr class="even">
+<td>ssh-keygen</td>
+<td>ssh-keygen</td>
+<td>generate an ssh key</td>
+</tr>
+<tr class="odd">
+<td>ssh-keygen</td>
+<td>ssh-keygen -lvf</td>
+<td>view the key finger print</td>
+</tr>
+<tr class="even">
+<td>ssh-copy-id</td>
+<td>ssh-copy-id <a href="mailto:user@email" class="email">user@email</a></td>
+<td>copy key to remote server</td>
+</tr>
+</tbody>
+</table>
+<h2 id="generate-key">Generate Key</h2>
+<pre><code>kevin@dalek ~ $ ssh-keygen -t ed25519 -a 100
+Generating public/private ed25519 key pair.
+Enter file in which to save the key (/home/kevin/.ssh/id_ed25519):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/kevin/.ssh/id_ed25519.
+Your public key has been saved in /home/kevin/.ssh/id_ed25519.pub.
+The key fingerprint is:
+SHA256:1cNtxP2990ZClsIoFek67E4S9xIdTeNtmleTJJ4B4HA kevin@dalek
+The key&#39;s randomart image is:
++--[ED25519 256]--+
+|       . Eo+++.o |
+|        + o*.=* o|
+|         +oo*o=++|
+|        .oo.o*+.+|
+|      ..So. o+. .|
+|       o+o   ...o|
+|      ..o..    oo|
+|       o..      o|
+|       ..      . |
++----[SHA256]-----+</code></pre>
+<h2 id="get-a-fingerprint">Get a Fingerprint</h2>
+<pre><code>[kevin@Tardis ~]$ ssh-keygen -lf .ssh/test_rsa_key.pub
+2048 d0:4a:98:88:95:65:6e:3c:59:7d:10:db:1d:00:10:40  kevin@tardis.local (RSA)</code></pre>
+<h2 id="adding-key">Adding Key</h2>
+<pre><code>Host *
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/id_ed25519
+  IdentityFile ~/.ssh/id_rsa # Keep any old key files if you want</code></pre>
+<p>Then to update add key to SSH agent: <code>ssh-add -K ~/.ssh/id_ed25519</code></p>
+<h2 id="best-practices">Best Practices</h2>
+<ul>
+<li><strong>rsa:</strong> an old algorithm based on the difficulty of factoring large numbers. A key size of at least 2048 bits is recommended for RSA; 4096 bits is better. RSA is getting old and significant advances are being made in factoring. Choosing a different algorithm may be advisable. It is quite possible the RSA algorithm will become practically breakable in the foreseeable future. All SSH clients support this algorithm.</li>
+<li><strong>dsa:</strong> an old US government Digital Signature Algorithm. It is based on the difficulty of computing discrete logarithms. A key size of 1024 would normally be used with it. DSA in its original form is no longer recommended.</li>
+<li><strong>ecdsa:</strong> a new Digital Signature Algorithm standarized by the US government, using elliptic curves. This is probably a good algorithm for current applications. Only three key sizes are supported: 256, 384, and 521 (sic!) bits. We would recommend always using it with 521 bits, since the keys are still small and probably more secure than the smaller keys (even though they should be safe as well). Most SSH clients now support this algorithm.</li>
+<li><strong>ed25519:</strong> this is a new algorithm added in OpenSSH. Support for it in clients is not yet universal. Thus its use in general purpose applications may not yet be advisable.</li>
+<li>Use OpenSSH 7 or later (which is common now, Debian Stretch has 7.4, Ubuntu 16.04 has 7.2)</li>
+<li>Use Ed25519 keys: <code>ssh-keygen -t ed25519 -a 100</code>
+<ul>
+<li><code>-a 100</code> specifies 100 rounds of derivation which makes the key harder to brute force</li>
+<li>creates a pub/private key at <code>.ssh/id_ed25519[.pub]</code></li>
+<li>New key, not every server will support</li>
+<li>Ed25519 is the EdDSA signature scheme using SHA-512 (SHA-2) and Curve25519</li>
+</ul></li>
+<li>Else, use RSA, 4096 bits: `ssh-keygen -t rsa -b 4096</li>
+</ul>
+<h1 id="disabling-host-key-check">Disabling Host Key Check</h1>
+<p>Why?? Well, when you build a lot of raspberry pi computers and the key keeps changing, it is annoying to keep fixing it.</p>
+<p>From the command line: <code>$ ssh -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" pi@raspberrypi.local</code>.</p>
+<p>To perminately change it, create a <code>~/.ssh/config</code> file with:</p>
+<pre><code>Host *
+   StrictHostKeyChecking no
+   UserKnownHostsFile=/dev/null</code></pre>
+<p>Or (maybe safer)</p>
+<pre><code>Host raspberrypi.local
+   StrictHostKeyChecking no
+   UserKnownHostsFile=/dev/null</code></pre>
+<h1 id="references">References</h1>
+<ul>
+<li><a href="https://paragonie.com/blog/2019/03/definitive-2019-guide-cryptographic-key-sizes-and-algorithm-recommendations">Cryptographic Guide 2019</a></li>
+<li><a href="https://seravo.fi/2019/how-to-create-good-ssh-keys">Seravo: Creating good ssh keys</a></li>
+<li><a href="https://security.stackexchange.com/a/144044">StackExchange: use ed25519</a></li>
+<li><a href="https://en.wikipedia.org/wiki/EdDSA">wikipedia: EdDSA</a></li>
+<li><a href="https://www.ssh.com/ssh/keygen">ssh.com keygen</a></li>
+<li>Medium: <a href="https://medium.com/risan/upgrade-your-ssh-key-to-ed25519-c6e8d60d3c54">Upgrade Your SSH Key to Ed25519</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

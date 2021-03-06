@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../index.html">Home</a>
+              <a class="logo" href="./../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../about.html">About</a>
+              <a class="logo" href="./../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Change the Activity the LED Tracks</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">7 Dec 2019</p>
+            </header>
+    <hr>
+<p>In <code>/boot/config.txt</code>:</p>
+<pre><code>dtparam=pwr_led_trigger=heartbeat</code></pre>
+<p><code>/boot/overlays/README</code> has this text:</p>
+<pre><code>    act_led_trigger         Choose which activity the LED tracks.
+                            Use &quot;heartbeat&quot; for a nice load indicator.
+                            (default &quot;mmc&quot;)</code></pre>
+<pre><code>none                No trigger
+kbd-scrolllock      Keyboard scroll lock
+kbd-numlock         Keyboard num lock
+kbd-capslock        Keyboard caps lock
+kbd-kanalock        Keyboard kana lock
+kbd-shiftlock       Keyboard shift
+kbd-altgrlock       Keyboard altgr
+kbd-ctrllock        Keyboard ctrl
+kbd-altlock         Keyboard alt
+kbd-shiftllock      Keyboard left shift
+kbd-shiftrlock      Keyboard right shift
+kbd-ctrlllock       Keyboard left ctrl
+kbd-ctrlrlock       Keyboard right ctrl
+timer               Flash at 1 second intervals
+oneshot             Flash only once
+heartbeat           Flash like a heartbeat (1-0-1-00000)
+backlight           Always on
+gpio                Flash when a certain GPIO is high???
+cpu0                Flash on cpu0 usage
+cpu1                Flash on cpu1 usage
+cpu2                Flash on cpu2 usage
+cpu3                Flash on cpu3 usage
+default-on          Always on
+[input]             Default state
+panic               Flash on kernel panic
+mmc0                Flash on mmc0 (primary SD Card interface) activity
+mmc1                Flash on mmc1 (secondary SD Card interface) activity
+rfkill0             Flash on wifi activity
+rfkill1             Flash on bluetooth activity</code></pre>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://raspberrypi.stackexchange.com/questions/69674/are-there-other-act-led-trigger-options-besides-mmc-and-heartbeat/69759#69759">stack exchange question</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

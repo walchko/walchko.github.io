@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                                              <img src=https://i.pinimg.com/564x/c4/ef/72/c4ef722a5951d123900debc282b1fef4.jpg>
+                <header id="title-block-header">
+    <h1 class="title">Machine to Machine Serialization</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">20 Feb 2019</p>
+            </header>
+    <hr>
+<ul>
+<li><a href="https://msgpack.org">MessagePack</a></li>
+<li><a href="https://google.github.io/flatbuffers/">Google Flatbuffers</a></li>
+<li><a href="https://developers.google.com/protocol-buffers/">Protocol buffers</a></li>
+<li><a href="https://capnproto.org/">Cap’n Proto</a></li>
+<li><a href="http://avro.apache.org/docs/current/">Apache Avro</a></li>
+</ul>
+<h1 id="performance">Performance</h1>
+<ul>
+<li><p>Cap’nPack and Flatbuffers are always stored in serialized form so there is <strong>no</strong> time to pack/unpack the messages. However, they do not produce the smallest message size, since they need to be able to efficiently access message data in memory</p></li>
+<li><p>Depending on data size, messagepack and protofuf generally do very well</p></li>
+<li><p><a href="https://github.com/thekvs/cpp-serializers">Benchmarks</a></p></li>
+<li><p><a href="https://codeburst.io/json-vs-protocol-buffers-vs-flatbuffers-a4247f8bda6f">more</a></p></li>
+</ul>
+<h2 id="protocol-buffers-protobuf">Protocol Buffers (Protobuf)</h2>
+<p>Protocol buffers are Google’s language-neutral, platform-neutral, extensible mechanism for serializing structured data – think XML, but smaller, faster, and simpler. You define how you want your data to be structured once, then you can use special generated source code to easily write and read your structured data to and from a variety of data streams and using a variety of languages.</p>
+<ul>
+<li>Dislikes
+<ul>
+<li>Separate tool to build message</li>
+<li>Large use of templates which increases compile time</li>
+<li>Feels like an 800lb gorilla</li>
+<li>Difficult to populate message with data or put another way, awkward syntax</li>
+<li>Simple messages generate large header/implementation files
+<ul>
+<li>Use every trick in the compsci book which makes thing overly complex for the simplest things</li>
+</ul></li>
+<li>No way to extend message class (math, printing, etc)</li>
+<li>Google centric, if google doesn’t care, it won’t get done/fixed
+<ul>
+<li>Issues with proper timestamps and leap seconds</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Languages: C++, Python</p>
+<p>Install: <code>brew install capnp</code> or <code>pip install pycapnp</code></p>
+<h2 id="capn-proto">Cap’n Proto</h2>
+<ul>
+<li>The Cap’n Proto encoding is appropriate both as a data interchange format and an in-memory representation, so once your structure is built, you can simply write the bytes straight out to disk!</li>
+<li>Inter-process communication: Multiple processes running on the same machine can share a Cap’n Proto message via shared memory. No need to pipe data through the kernel. Calling another process can be just as fast and easy as calling another thread.</li>
+<li>Created by the Google project manager for protobuf version 2. He tried to fix things he didn’t like and get rid of the pack/unpack time</li>
+<li>Random access: You can read just one field of a message without parsing the whole thing.</li>
+<li>Really designed for its own RPC system more scope than just message serialization</li>
+<li>Awkward interfacing with zmq. In memory data structure unable to put into zmq without resorting to in memory copy which seems to negate the capability of storing data in memory the same as on wire</li>
+<li>Cmake support for building messages in c++</li>
+<li>Dislikes
+<ul>
+<li>Focus seems to be c++, python support spotty</li>
+</ul></li>
+</ul>
+<p>Languages: C++, Python</p>
+<p>Install: <code>brew install capnp</code> or <code>pip install pycapnp</code></p>
+<h2 id="google-flatbuffers">Google Flatbuffers</h2>
+<p>Similar to Cap’n Proto (already serialized) but also get Protobuf benefits. Used by <a href="https://code.fb.com/android/improving-facebook-s-performance-on-android-with-flatbuffers/">Facebook</a>.</p>
+<ul>
+<li>Zmq example: https://stackoverflow.com/questions/40053351/simple-flatbuffer-over-zeromq-c-example-copying-struct-to-flatbuffer-over-zm</li>
+<li>Seems to have cmake support in c++</li>
+</ul>
+<p>Languages: C++, Python</p>
+<p>Install: <code>brew info flatbuffers</code> or <code>pip install flatbuffers</code></p>
+<h2 id="messagepack">MessagePack</h2>
+<p>MessagePack is an efficient binary serialization format. It lets you exchange data among multiple languages like JSON. But it’s faster and smaller. Small integers are encoded into a single byte, and typical short strings require only one extra byte in addition to the strings themselves. - Adding compression for small messages seems unnecessary (small size savings for cpu cycles) or in some cases has resulted in a larger compressed message</p>
+<ul>
+<li>Dislikes
+<ul>
+<li>Json has no understanding of python tuples, only arrays, so you are limited between one or the other, not both</li>
+<li>no schema, need to redefine message for every language
+<ul>
+<li>Also a benefit, you can add more capability to your message (math, printing, etc)</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Languages: C++, Python</p>
+<p>Install: <code>brew install msgpack</code> or <code>pip install msgpack</code></p>
+<h2 id="apache-avro">Apache Avro</h2>
+<p>Apache Avro is a data serialization system. Avro provides:</p>
+<ul>
+<li>Schema based, with ability to evolve</li>
+<li>A compact, fast, binary data format.</li>
+<li>A container file, to store persistent data.</li>
+<li>Remote procedure call (RPC).</li>
+<li>Simple integration with dynamic languages. Code generation is not required to read or write data files nor to use or implement RPC protocols. Code generation as an optional optimization, only worth implementing for statically typed languages.</li>
+</ul>
+<h2 id="wikipedia-example">Wikipedia Example</h2>
+<p>Here is the example:</p>
+<script src="https://gist.github.com/walchko/8d3f9edd5ac3d8170cfbbf80bf65a485.js"></script>
+<p>When you look the file you can see the avro header, schema, and data:</p>
+<pre><code>$ od -v -t x1z users.avro
+0000000 4f 62 6a 01 04 14 61 76 72 6f 2e 63 6f 64 65 63  &gt;Obj...avro.codec&lt;
+0000020 08 6e 75 6c 6c 16 61 76 72 6f 2e 73 63 68 65 6d  &gt;.null.avro.schem&lt;
+0000040 61 ba 03 7b 22 74 79 70 65 22 3a 20 22 72 65 63  &gt;a..{&quot;type&quot;: &quot;rec&lt;
+0000060 6f 72 64 22 2c 20 22 6e 61 6d 65 22 3a 20 22 55  &gt;ord&quot;, &quot;name&quot;: &quot;U&lt;
+0000100 73 65 72 22 2c 20 22 6e 61 6d 65 73 70 61 63 65  &gt;ser&quot;, &quot;namespace&lt;
+0000120 22 3a 20 22 65 78 61 6d 70 6c 65 2e 61 76 72 6f  &gt;&quot;: &quot;example.avro&lt;
+0000140 22 2c 20 22 66 69 65 6c 64 73 22 3a 20 5b 7b 22  &gt;&quot;, &quot;fields&quot;: [{&quot;&lt;
+0000160 74 79 70 65 22 3a 20 22 73 74 72 69 6e 67 22 2c  &gt;type&quot;: &quot;string&quot;,&lt;
+0000200 20 22 6e 61 6d 65 22 3a 20 22 6e 61 6d 65 22 7d  &gt; &quot;name&quot;: &quot;name&quot;}&lt;
+0000220 2c 20 7b 22 74 79 70 65 22 3a 20 5b 22 69 6e 74  &gt;, {&quot;type&quot;: [&quot;int&lt;
+0000240 22 2c 20 22 6e 75 6c 6c 22 5d 2c 20 22 6e 61 6d  &gt;&quot;, &quot;null&quot;], &quot;nam&lt;
+0000260 65 22 3a 20 22 66 61 76 6f 72 69 74 65 5f 6e 75  &gt;e&quot;: &quot;favorite_nu&lt;
+0000300 6d 62 65 72 22 7d 2c 20 7b 22 74 79 70 65 22 3a  &gt;mber&quot;}, {&quot;type&quot;:&lt;
+0000320 20 5b 22 73 74 72 69 6e 67 22 2c 20 22 6e 75 6c  &gt; [&quot;string&quot;, &quot;nul&lt;
+0000340 6c 22 5d 2c 20 22 6e 61 6d 65 22 3a 20 22 66 61  &gt;l&quot;], &quot;name&quot;: &quot;fa&lt;
+0000360 76 6f 72 69 74 65 5f 63 6f 6c 6f 72 22 7d 5d 7d  &gt;vorite_color&quot;}]}&lt;
+0000400 00 05 f9 a3 80 98 47 54 62 bf 68 95 a2 ab 42 ef  &gt;......GTb.h...B.&lt;
+0000420 24 04 2c 0c 41 6c 79 73 73 61 00 80 04 02 06 42  &gt;$.,.Alyssa.....B&lt;
+0000440 65 6e 00 0e 00 06 72 65 64 05 f9 a3 80 98 47 54  &gt;en....red.....GT&lt;
+0000460 62 bf 68 95 a2 ab 42 ef 24                       &gt;b.h...B.$&lt;
+0000471</code></pre>
+<p>Languages: C++, Python</p>
+<p>Install: <code>brew install avro-cpp avro-tools</code> or <code>pip install avro</code></p>
+<h1 id="reference">Reference:</h1>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Apache_Avro">Apache Avro Wikipedia</a></li>
+<li><a href="serialization.pdf">Safari Books chapter excerpt on Thrift, Protocol Buffers, Avros</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

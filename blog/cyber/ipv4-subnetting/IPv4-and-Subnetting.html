@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                                              <img src=https://i.pinimg.com/564x/5f/d8/bf/5fd8bf065c796a95d1cc9e2f87b9d87a.jpg width=400px>
+                <header id="title-block-header">
+    <h1 class="title">Subnetting</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">2015-12-28</p>
+            </header>
+    <hr>
+<p>The IP address is a 32 bit number which provides 0 to 4,294,967,295 unique addresses on a network. This is chopped up into 4 8-bit octets separated by a period.</p>
+<p>0.0.0.0 to 0.0.0.255 is one octet which provide 256 addresses.</p>
+<h2 id="subnetwork">Subnetwork</h2>
+<p>Chopping a large network up into smaller pieces is subnetworking.</p>
+<ul>
+<li>beginning is always even, network id</li>
+<li>ending is always odd, broadcast id</li>
+<li>you can not use the network or broadcast id address, since they have special meaning</li>
+<li>0.0.0.0/8 (0.0.0.0 to 0.255.255.255) not used</li>
+<li>127.0.0.0/8 (127.0.0.0 to 127.255.255.255) used for loop back addresses</li>
+<li>Number of hosts: 2^bits - 2 where bits is the number of bits for the subnet and the -2 accounts for both the network and broadcast id's</li>
+</ul>
+<p>You need to chop along clean binary division as shown below:</p>
+<p><img src="subnetting_b.png" /></p>
+<h2 id="network-classes">### Network Classes</h2>
+<table style="width:98%;">
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 22%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Class</th>
+<th style="text-align: left;">IP Range</th>
+<th>Subnet Bits</th>
+<th style="text-align: left;">Mask Bits</th>
+<th style="text-align: left;">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">A</td>
+<td style="text-align: left;">0.0.0.0 to 127.255.255.255</td>
+<td>24</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">the first half of the address space</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">B</td>
+<td style="text-align: left;">128.0.0.0 to 191.255.255.255</td>
+<td>16</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">half the remaining address space</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">C</td>
+<td style="text-align: left;">192.0.0.0 to 223.255.255.255</td>
+<td>8</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">half the remaining address space</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">D</td>
+<td style="text-align: left;">224.0.0.0 to 239.255.255.255</td>
+<td>undefined</td>
+<td style="text-align: left;">undefined</td>
+<td style="text-align: left;">half the remaining address space for multicast</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">E</td>
+<td style="text-align: left;">240.0.0.0 to 255.255.255.255</td>
+<td>undefined</td>
+<td style="text-align: left;">undefined</td>
+<td style="text-align: left;">everything remaining</td>
+</tr>
+</tbody>
+</table>
+<p><img src="subnetting_h.png" /></p>
+<h2 id="private-subnetworks">### Private Subnetworks</h2>
+<table style="width:98%;">
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 12%" />
+<col style="width: 11%" />
+<col style="width: 20%" />
+<col style="width: 27%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Class</th>
+<th style="text-align: left;">Subnet Bits</th>
+<th style="text-align: left;">Mask Bits</th>
+<th style="text-align: left;">IP</th>
+<th style="text-align: left;">IP Range</th>
+<th style="text-align: left;">Number of Hosts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">A</td>
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">10.0.0.0/8</td>
+<td style="text-align: left;">10.0.0.0 to 10.255.255.255</td>
+<td style="text-align: left;">16,777,216</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">B</td>
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">172.16.0.0/12</td>
+<td style="text-align: left;">172.16.0.0 to 172.31.255.255</td>
+<td style="text-align: left;">1,048,576</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">C</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">192.168.0.0/16</td>
+<td style="text-align: left;">192.168.0.0 to 192.168.255.255</td>
+<td style="text-align: left;">65,536</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">C</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">169.254.0.0/16</td>
+<td style="text-align: left;">169.254.0.0 to 169.254.255.255</td>
+<td style="text-align: left;">65,536</td>
+</tr>
+</tbody>
+</table>
+<p>The 169.254.0.0 addresses are only used when DHCP server is not available.</p>
+<h2 id="address-bits">Address Bits</h2>
+<ul>
+<li>8 bits = 256 addresses (254 hosts, minus the network and broadcast id's)</li>
+<li>9 bits = 512 addresses</li>
+<li>10 bits = 1024 addresses</li>
+<li>11 bits = 2048 addresses</li>
+</ul>
+<p><img src="subnetting_a.png" /></p>
+<p><img src="subnetting_c.png" /></p>
+<h2 id="masks">Masks</h2>
+<p>Typical home networks use 192.168.0.0/16 where the 16 indicates a 16-bit mask giving addresses from 192.168.0.0 to 192.168.255.255. Since a complete mask is 32-bits and each octet is 8-bits each, 16-bits uses the bottom 2 octets or 192.168.x.x. An 8-bit mask would use the lower 3 octets or 192.x.x.x. A 24-bit mask would only use the bottom octet of the address range, or 192.168.1.x.</p>
+<ul>
+<li>8-bit mask: 255.0.0.0</li>
+<li>16-bit mask: 255.255.0.0</li>
+<li>24-bit mask: 255.255.255.0</li>
+</ul>
+<h2 id="calculator">Calculator</h2>
+<ul>
+<li><a href="http://www.subnet-calculator.com">IP address calculator</a></li>
+<li><a href="http://jodies.de/ipcalc?">Another one</a></li>
+</ul>
+<pre><code>192.168.0.1/16:
+Address:   192.168.0.1           11000000.10101000 .00000000.00000001
+Netmask:   255.255.0.0 = 16      11111111.11111111 .00000000.00000000
+Wildcard:  0.0.255.255           00000000.00000000 .11111111.11111111
+=&gt;
+Network:   192.168.0.0/16        11000000.10101000 .00000000.00000000 (Class C)
+Broadcast: 192.168.255.255       11000000.10101000 .11111111.11111111
+HostMin:   192.168.0.1           11000000.10101000 .00000000.00000001
+HostMax:   192.168.255.254       11000000.10101000 .11111111.11111110
+Hosts/Net: 65534                 (Private Internet)
+
+192.168.1.1/24:
+Address:   192.168.1.1           11000000.10101000.00000001 .00000001
+Netmask:   255.255.255.0 = 24    11111111.11111111.11111111 .00000000
+Wildcard:  0.0.0.255             00000000.00000000.00000000 .11111111
+=&gt;
+Network:   192.168.1.0/24        11000000.10101000.00000001 .00000000 (Class C)
+Broadcast: 192.168.1.255         11000000.10101000.00000001 .11111111
+HostMin:   192.168.1.1           11000000.10101000.00000001 .00000001
+HostMax:   192.168.1.254         11000000.10101000.00000001 .11111110
+Hosts/Net: 254                   (Private Internet)</code></pre>
+<h1 id="references">References</h1>
+<ul>
+<li>George Ou, <a href="http://www.techrepublic.com/blog/data-center/ip-subnetting-made-easy-125343/">IP subnetting made easy</a></li>
+<li>wikipedia: <a href="http://en.wikipedia.org/wiki/Private_network">Private Subnetworks</a></li>
+<li>wikipedia: <a href="http://en.wikipedia.org/wiki/Classful_network#Introduction_of_address_classes">Network Classes</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../index.html">Home</a>
+              <a class="logo" href="./../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../about.html">About</a>
+              <a class="logo" href="./../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Debian SystemV Services</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">2015-11-29</p>
+            </header>
+    <hr>
+<p>To have a service <code>archeyjs</code> run at boot and reload if it goes down, create a file <code>/etc/systemd/system/archeyjs.service</code>:</p>
+<pre><code>[Service]
+ExecStart=/usr/local/bin/archeyjs
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=archeyjs
+User=pi
+Group=pi
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+<p>Then do:</p>
+<pre><code>sudo systemctl enable archeyjs
+sudo systemctl start archeyjs</code></pre>
+<p>Now you can use <code>sudo systemctl start|stop|status archeyjs.service</code> to start, stop, or find the current status of the server.</p>
+<pre><code>pi@zoidberg:~/tmp/node $ systemctl status archeyjs
+● archeyjs.service
+   Loaded: loaded (/etc/systemd/system/archeyjs.service; enabled)
+   Active: active (running) since Fri 2016-12-30 22:54:10 MST; 6s ago
+ Main PID: 2873 (node)
+   CGroup: /system.slice/archeyjs.service
+       └─2873 node /usr/bin/archeyjs
+
+Dec 30 22:54:10 zoidberg systemd[1]: Started archeyjs.service.</code></pre>
+<p>If you make any changes to the service file, you need to reload it:</p>
+<pre><code>sudo systemctl daemon-reload</code></pre>
+<p>You can also do:</p>
+<pre><code>pi@zoidberg ~ $ service archeyjs status
+● archeyjs.service
+   Loaded: loaded (/etc/systemd/system/archeyjs.service; enabled)
+   Active: active (running) since Fri 2016-12-30 22:54:10 MST; 6 days ago
+ Main PID: 2873 (node)
+   CGroup: /system.slice/archeyjs.service
+           └─2873 node /usr/bin/archeyjs
+
+
+
+pi@zoidberg ~ $ service bluetooth status
+● bluetooth.service - Bluetooth service
+   Loaded: loaded (/lib/systemd/system/bluetooth.service; enabled)
+   Active: active (running) since Fri 2016-12-30 20:35:36 MST; 1 weeks 0 days ago
+     Docs: man:bluetoothd(8)
+ Main PID: 586 (bluetoothd)
+   Status: &quot;Running&quot;
+   CGroup: /system.slice/bluetooth.service
+           └─586 /usr/lib/bluetooth/bluetoothd</code></pre>
+<h1 id="references">References</h1>
+<ul>
+<li><a href="http://www.thegeekstuff.com/2012/03/lsbinit-script/">thegeekstuff</a></li>
+<li><a href="https://www.debian-administration.org/article/28/Making_scripts_run_at_boot_time_with_Debian">debian-administration.org</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../index.html">Home</a>
+              <a class="logo" href="./../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../about.html">About</a>
+              <a class="logo" href="./../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">How To Design 3d Printer Parts for Mechanical Fasteners</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">24 Aug 2019</p>
+            </header>
+    <hr>
+<h2 id="dimensions-for-self-tapping-screws">Dimensions for Self Tapping Screws</h2>
+<ul>
+<li><strong>M3:</strong> 2.5mm (tight) or 2.75mm hole
+<ul>
+<li>using M3x12mm on a 2mm thick surface</li>
+<li>repeated removal loosens them up … so 2.5mm might be best over time</li>
+</ul></li>
+</ul>
+<h2 id="d-printer-dimensions-for-fasteners-mm">3d Printer Dimensions for Fasteners [mm]</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Type</th>
+<th>Screw Dia.</th>
+<th>Print Dia.</th>
+<th>CS Dia.</th>
+<th>CS Depth</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>M2 Hex Socket</td>
+<td>2</td>
+<td>2.5</td>
+<td>4</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>M3 Hex Socket</td>
+<td>3</td>
+<td>3.5</td>
+<td>6</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>2-56 Pan</td>
+<td>2.18</td>
+<td>2.5</td>
+<td>6</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>4-40 Pan</td>
+<td>2.845</td>
+<td>3.5</td>
+<td>8.5</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>CS:</strong> Counter Sink, so machine screw head is flush with surface (well sort of)</li>
+<li><strong>Pan:</strong> Pan phillips head (+) screw</li>
+</ul>
+<h2 id="openscad-code-for-fasteners">OpenScad Code for Fasteners</h2>
+<pre class="openscad"><code>// https://www.engineersedge.com/hardware/standard_metric_hex_nuts_13728.htm
+// m2: d=4    D=4.62
+// m3: d=5.5  D=6.35
+module hex(D,t){
+    // D is outter diameter
+    x = D/2;
+    y = sqrt(3)/2*x;
+    pts = [
+        [x/2,y],
+        [x,0],
+        [x/2,-y],
+        [-x/2,-y],
+        [-x,0],
+        [-x/2,y]
+    ];
+    linear_extrude(height=t){
+        polygon(pts);
+    }
+}
+
+module M3Nut(t){
+    hex(6.4, t);
+}
+
+module M2Nut(t){
+    hex(4.65, t);
+}
+
+module M2(t){
+    cylinder(3*t, d=2.2, center=true);
+    translate([0,0,-1]) M2Nut(3); // nut
+}
+
+module M3(t){
+    cylinder(h=3*t, d=3.3, center=true);
+    translate([0,0,2]) cylinder(h=3*t, d=7, center=false); // head
+}</code></pre>
+<h2 id="imperial-standard-to-metric-conversion">Imperial Standard to Metric Conversion</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Guage</th>
+<th>Decimal</th>
+<th>Metric</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0.060"</td>
+<td>1.524 mm</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>0.073"</td>
+<td>1.854 mm</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>0.086"</td>
+<td>2.180 mm</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>0.099"</td>
+<td>2.515 mm</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>0.112"</td>
+<td>2.845 mm</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>0.125"</td>
+<td>3.175 mm</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>0.138"</td>
+<td>3.505 mm</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>0.164"</td>
+<td>4.166 mm</td>
+</tr>
+</tbody>
+</table>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.engineersedge.com/hardware/_metric_socket_head_cap_screws_14054.htm">engineersedge.com metric socket head screws</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

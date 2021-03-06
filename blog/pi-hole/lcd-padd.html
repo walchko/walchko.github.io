@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../index.html">Home</a>
+              <a class="logo" href="./../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../about.html">About</a>
+              <a class="logo" href="./../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                                              <img src=https://camo.githubusercontent.com/fe3dec9387952987a6a7fd5c7d9f7217a578737a/68747470733a2f2f6a706d636b2e636f6d2f696d672f626c6f672f706164642e706e67>
+                <header id="title-block-header">
+    <h1 class="title">Displaying Status of Pi Hole using RPi 7in LCD</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">23 Sept 2019</p>
+            </header>
+    <hr>
+<p>The software is available <a href="https://github.com/jpmck/PADD">here</a>. Most of the setup is explained there, just a few clarifications are added here.</p>
+<ol type="1">
+<li>If the LCD is upside-down, you can fix it by adding <code>lcd_rotate=2</code> in <code>/boot/config.txt</code></li>
+<li><em>[optional]</em> You can disable the touch screen capability by adding <code>disable_touchscreen=1</code> to <code>/boot/config.txt</code></li>
+<li>Get project: <code>git clone https://github.com/jpmck/PADD.git</code></li>
+<li>Append the following to the end of pi’s <code>.bashrc</code> file. If <code>pi</code> logs in on the LCD then <code>padd.sh</code> will run, else if <code>pi</code> is logged in on an <code>ssh</code> connection it will be normal login. <code># Run PADD     # If we’re on the PiTFT screen (ssh is xterm)     if [ "$TERM" == "linux" ] ; then       while :       do         ./padd.sh         sleep 1       done     fi</code></li>
+<li>Enable <code>pi</code> autologin
+<ol type="1">
+<li>Run: sudo raspi-config</li>
+<li>Choose option 3: Boot Options</li>
+<li>Choose option B1: Desktop / CLI</li>
+<li>Choose option B2: Console Autologin</li>
+<li>Select Finish, and reboot the pi</li>
+</ol></li>
+</ol>
+<p>Now, you should see <code>padd.sh</code> running on the LCD.</p>
+<h2 id="brightness">Brightness</h2>
+<p>Now <code>root</code> owns the memory location controlling brightness which ranges from 0-255. There is no reason to keep this LCD screemingly bright all the time, so I run it at a lower level than the default 255. You can play with the brightness via the following and add it into your <code>.bashcr</code> when you are happy.</p>
+<pre><code>sudo bash -c &quot;echo 50 &gt; /sys/class/backlight/rpi_backlight/brightness&quot;</code></pre>
+<h1 id="references">References</h1>
+<ul>
+<li><a href="https://www.balena.io/blog/add-a-display-to-your-pi-hole-for-monitoring-and-stats/">LCD parameter fine tunings</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

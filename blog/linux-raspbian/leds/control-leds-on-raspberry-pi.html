@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Controlling the LEDs on an RPi</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">1 Dec 2018</p>
+            </header>
+    <hr>
+<p>The green OK LED can be controlled from software. It’s available as <code>/sys/class/leds/led0/</code></p>
+<p>The kernel LED driver, which controls led0, has “triggers” which let some other part of the kernel control the LED. The default trigger for the LED is <code>mmc0</code>, which makes it come on when the SD card is accessed.</p>
+<pre><code>root@raspberrypi:~# cat /sys/class/leds/led0/trigger
+none [mmc0]</code></pre>
+<p>Here, the <code>mmc0</code> trigger is selected. You can deactivate this as follows:</p>
+<pre><code>echo none &gt;/sys/class/leds/led0/trigger</code></pre>
+<p>The LED can be turned on and off using the <code>brightness</code> file. The minimum brightness is 0, and the maximum is 255 (specified in the <code>max_brightness</code> file). However, as there is no hardware support for variable brightness, any value greater than 0 will turn the LED on.</p>
+<pre><code>echo 1 &gt;/sys/class/leds/led0/brightness
+echo 0 &gt;/sys/class/leds/led0/brightness</code></pre>
+<p>Setting the brightness to 0 automatically sets the trigger to “none”</p>
+<p>If you want the LED to go back to its default function:</p>
+<pre><code>echo mmc0 &gt;/sys/class/leds/led0/trigger</code></pre>
+<p>As an aside, there are a couple of kernel modules you can load up (ledtrig_timer and ledtrig_heartbeat) which will flash the LED for you.</p>
+<pre><code>modprobe ledtrig_heartbeat
+echo heartbeat &gt;/sys/class/leds/led0/trigger</code></pre>
+<ul>
+<li><a href="https://www.raspberrypi.org/forums/viewtopic.php?t=12530">Reference</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

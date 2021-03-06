@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Creating a Custom Raspbian Image</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">30 Aug 2019</p>
+            </header>
+    <hr>
+<p>This assumes you have already setup a “gold” copy of the image you want. Now let’s make a copy of that image so you can easily replicate on other SD cards.</p>
+<p><strong>Note:</strong> I am using Ubuntu (Linux) for this because I want to shrink the image once it is made.</p>
+<ol type="1">
+<li>Setup an image on an SD card and insert it into the computer</li>
+<li>Install needed software: <code>sudo apt install parted</code></li>
+<li>Do <code>df -h</code> or <code>sudo fdisk -l</code> to see what new mounts are there
+<ol type="1">
+<li>You cannot copy a mounted drive, so you will have to do <code>umount /dev/sdbX</code></li>
+<li>On linux, both the boot and root partitions will be mounted, so unmount both of them</li>
+</ol></li>
+<li>Clone the image: <code>sudo dd if=/dev/sdb of=/path/to/image.img</code></li>
+<li>Shrink the image
+<ol type="1">
+<li>Get the <a href="https://github.com/Drewsif/PiShrink">shrink script</a> and make it executable:</li>
+</ol>
+<pre><code>wget  https://raw.githubusercontent.com/Drewsif/PiShrink/master/pishrink.sh
+chmod +x pishrink.sh</code></pre>
+<ol start="2" type="1">
+<li><code>sudo pishrink.sh /path/to/image.img /path/to/shrunk/image/img</code></li>
+</ol></li>
+<li><em>[Optional]</em> Further compression can be done with: <code>gzip -9 -c /path/to/shrunk/image.img &gt; image.img.gz</code></li>
+</ol>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://medium.com/platformer-blog/creating-a-custom-raspbian-os-image-for-production-3fcb43ff3630">Creating Custom Images for Production</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                                              <img src=https://cdn.arstechnica.net/wp-content/uploads/2017/01/GettyImages-487540678-800x539.jpg width=400px>
+                <header id="title-block-header">
+    <h1 class="title">Multirotor Drone Terms</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">30 Dec 2020</p>
+            </header>
+    <hr>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://oscarliang.com/quadcopter-motor-propeller/">Oscarliang.com very detailed overview of motors and propellers</a></li>
+<li><a href="https://www.faa.gov/news/media/attachments/OOP_Executive_Summary.pdf">FAA UAV Ruling, 28 Dec 2020</a></li>
+<li>ArsTechnica: <a href="https://arstechnica.com/tech-policy/2020/12/faa-finally-sets-rules-for-piloting-small-drones/">FAA finally sets rules for piloting small drones</a></li>
+<li><a href="https://ardupilot.org/copter/index.html">ArduPilot docs</a></li>
+</ul>
+<h2 id="frame-sizes">Frame Sizes</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Class</th>
+<th>Dimension</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Nano</td>
+<td>80-100 mm</td>
+</tr>
+<tr class="even">
+<td>Micro</td>
+<td>100-150 mm</td>
+</tr>
+<tr class="odd">
+<td>Small</td>
+<td>150-250 mm</td>
+</tr>
+<tr class="even">
+<td>Medium</td>
+<td>250-400</td>
+</tr>
+<tr class="odd">
+<td>Large</td>
+<td>+400 mm</td>
+</tr>
+</tbody>
+</table>
+<h2 id="propulsion">Propulsion</h2>
+<p><img src="../esc-control/motor.jpg" /> <img src="https://oscarliang.com/ctt/uploads/2017/12/quadcopter-brushless-motor-n-p-poles-magnets-number-12-14.jpg" /> <img src="" /></p>
+<ul>
+<li>Motors
+<ul>
+<li>Motors are rated by a 4 digit number AABB, like 2213: stator is 22mm in diameter, stator height is 13mm
+<ul>
+<li>Taller stator gives <strong>more power</strong> at <strong>higher</strong> RPM</li>
+<li>Wider stator gives <strong>more torque</strong> at <strong>lower</strong> RPM</li>
+</ul></li>
+<li>KV ratings relate RPMs to voltage.
+<ul>
+<li>900KV motor at 2V produces 1800RPM</li>
+<li>Typically lower KV motors produce more torque</li>
+</ul></li>
+<li>Motors for 3-6 inch diameter props have M5 shafts</li>
+<li>Typically have 16x16 mm mount points</li>
+<li>22XX and 23XX motors typically have 12 poles and 14 magnets
+<ul>
+<li>More poles = smoother flight</li>
+<li>Fewer poles = more powerful motors</li>
+</ul></li>
+</ul></li>
+<li>Propellars
+<ul>
+<li>4 digit number: 8045 means, 8 inch diameter with a pitch of 4.5 inches
+<ul>
+<li>Higher pitch produces more downward force</li>
+</ul></li>
+</ul></li>
+<li>Matching
+<ul>
+<li>Typically you would pair <strong>high pitch</strong> propellars with <strong>low KV</strong> motors or the reverse</li>
+<li>For a 5 in prop, common motors are 2207, 2306, 2307, and 2407</li>
+<li>High torque, high power motors can create vibration and feedback into the IMU on the flight controller causing instability. Soft mounting your flight controller can help -Thrust to weight ratio</li>
+<li>Need at least <strong>twice</strong> the thrust compared to the weight of the drone</li>
+</ul></li>
+<li>Motor orientation:</li>
+</ul>
+<p><img src="https://ardupilot.org/copter/_images/motororder-quad-x-2d.png" /></p>
+<h2 id="raspberry-pi-and-ardupilot-flight-computer">Raspberry Pi and ArduPilot Flight Computer</h2>
+<p><img src="https://docs.emlid.com/navio/img/Navio-_34_600x6001-600x380.png" /></p>
+<ul>
+<li><a href="https://navio2.emlid.com/">website</a></li>
+<li><a href="https://docs.emlid.com/navio/">docs</a></li>
+</ul>
+<h2 id="pixhawk">Pixhawk</h2>
+<p><img src="https://docs.px4.io/v1.9.0/assets/flight_controller/pixhawk4/pixhawk4_logo_view.jpg" /></p>
+<ul>
+<li><a href="https://docs.px4.io/v1.9.0/en/flight_controller/pixhawk4.html">Pixhawk 4 spec</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

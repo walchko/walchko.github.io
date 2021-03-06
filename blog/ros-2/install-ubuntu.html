@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../index.html">Home</a>
+              <a class="logo" href="./../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../about.html">About</a>
+              <a class="logo" href="./../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Installing ROS2 on Ubuntu</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">5 Oct 2019</p>
+            </header>
+    <hr>
+<p><img src="ros2.png" /></p>
+<p>As of this, ROS2 Dashing Diamenata is the latest <a href="https://index.ros.org/doc/ros2/Releases/">release</a></p>
+<p><strong>WARNING:</strong> the install instructions are crap. I originally use install linux, but only later noticed there was an <a href="https://index.ros.org/doc/ros2/Installation/Dashing/Linux-Install-Debians/#dashing-linux-install-debians-install-ros-2-packages">installing ros2 via debian packages</a> option</p>
+<h2 id="apt"><code>apt</code></h2>
+<p>Setup your system with needed programs and repos:</p>
+<pre><code>sudo apt update &amp;&amp; sudo apt install curl gnupg2 lsb-release
+curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+sudo sh -c &#39;echo &quot;deb [arch=amd64,arm64] http://packages.ros.org/ros2/ubuntu `lsb_release -cs` main&quot; &gt; /etc/apt/sources.list.d/ros2-latest.list&#39;</code></pre>
+<p>Now update your system, <em>note</em> below, I am instally <code>foxy</code>, but you can change the name to any distro you want:</p>
+<pre><code>sudo apt update
+sudo apt install ros-foxy-desktop
+# sudo apt install ros-foxy-ros-base</code></pre>
+<p>Now do <code>source /opt/ros/dashing/setup.bash</code> to setup your <code>env</code> properly.</p>
+<h2 id="pip"><code>pip</code></h2>
+<p>To install the python packages in a virtualenv:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a> pip3 install <span class="op">-</span>U colcon<span class="op">-</span>common<span class="op">-</span>extensions</span></code></pre></div>
+<h2 id="cross-compiling-for-arm">Cross-Compiling for ARM</h2>
+<p>There are <a href="https://index.ros.org/doc/ros2/Tutorials/Cross-compilation/">directions</a> for using docker to cross-compile for ARM.</p>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

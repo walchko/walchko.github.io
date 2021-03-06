@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                                              <img src=https://i.pinimg.com/564x/72/0a/6a/720a6a5d265af4c589ad74a8592a4ef1.jpg>
+                <header id="title-block-header">
+    <h1 class="title">iperf3</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">2016-04-02</p>
+            </header>
+    <hr>
+<p><a href="http://software.es.net/iperf/">iperf3</a> allows you to benchmark network performance. <a href="https://github.com/esnet/iperf">Github</a></p>
+<h2 id="server">Server</h2>
+<p>Start the server:</p>
+<pre class="bashsession"><code>[kevin@Dalek ~]$ iperf3 -s -p 8282</code></pre>
+<h2 id="client">Client</h2>
+<p>Run the client to test the network:</p>
+<pre class="bashsession"><code>[kevin@Tardis ~]$ iperf3 -c Dalek.local -p 8282
+Connecting to host Dalek.local, port 8282
+[  6] local 192.168.1.3 port 54673 connected to 192.168.1.2 port 8282
+[ ID] Interval           Transfer     Bandwidth
+[  6]   0.00-1.00   sec  22.3 MBytes   187 Mbits/sec
+[  6]   1.00-2.00   sec  21.3 MBytes   178 Mbits/sec
+[  6]   2.00-3.00   sec  18.4 MBytes   155 Mbits/sec
+[  6]   3.00-4.00   sec  21.3 MBytes   178 Mbits/sec
+[  6]   4.00-5.00   sec  20.4 MBytes   171 Mbits/sec
+[  6]   5.00-6.00   sec  21.0 MBytes   176 Mbits/sec
+[  6]   6.00-7.00   sec  20.5 MBytes   172 Mbits/sec
+[  6]   7.00-8.00   sec  20.8 MBytes   174 Mbits/sec
+[  6]   8.00-9.00   sec  20.7 MBytes   174 Mbits/sec
+[  6]   9.00-10.00  sec  21.8 MBytes   183 Mbits/sec
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth
+[  6]   0.00-10.00  sec   209 MBytes   175 Mbits/sec                  sender
+[  6]   0.00-10.00  sec   209 MBytes   175 Mbits/sec                  receiver
+
+iperf Done.</code></pre>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                          <header id="title-block-header">
+    <h1 class="title">Dropbox Install on Ubuntu</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">27 July 2020</p>
+            </header>
+    <hr>
+<h2 id="package-manager">Package Manager</h2>
+<p>Install the appropriate package if you want to use Dropbox on your Linux Desktop.</p>
+<pre><code>    Ubuntu 14.04 or higher (.deb)       64-bit      32-bit</code></pre>
+<p>Note: These packages install an open-source helper application. The version of this application does not change as frequently as the main Dropbox application. These packages will always install the latest version of Dropbox for Linux.</p>
+<h2 id="dropbox-headless-install-via-command-line">Dropbox Headless Install via command line</h2>
+<p>The Dropbox daemon works fine on all 32-bit and 64-bit Linux servers. To install, run the following command in your Linux terminal.</p>
+<ul>
+<li>32-bit: <code>cd ~ &amp;&amp; wget -O - "https://www.dropbox.com/download?plat=lnx.x86" | tar xzf -</code></li>
+<li>64-bit: <code>cd ~ &amp;&amp; wget -O - "https://www.dropbox.com/download?plat=lnx.x86_64" | tar xzf -</code></li>
+</ul>
+<p>Next, run the Dropbox daemon from the newly created <code>.dropbox-dist</code> folder: <code>~/.dropbox-dist/dropboxd</code></p>
+<h2 id="systemd">Systemd</h2>
+<p>You can setup dropbox to run automatically with <code>systemd</code> by using <a href="https://github.com/joeroback/dropbox">this</a> service file.</p>
+<pre><code># this is the dropbox@.service file
+
+[Unit]
+Description=Dropbox as a system service
+After=local-fs.target network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/env &quot;/home/%i/.dropbox-dist/dropboxd&quot;
+Restart=on-failure
+RestartSec=1
+User=%i
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+<p>From the <code>README.md</code>, it says:</p>
+<hr />
+<p>This is a systemd service file to start up dropbox on a per user basis on boot.</p>
+<p>This assumes each user installed dropbox headless via the command line: https://www.dropbox.com/en/install?os=lnx and has setup his/her account such that running dropboxd manually works.</p>
+<ul>
+<li>Place the dropbox@.service file into /etc/systemd/system</li>
+<li>Reload the daemons: systemctl daemon-reload</li>
+<li>Enable the service for users: systemctl enable dropbox@username</li>
+<li>Start service: systemctl start dropbox@username</li>
+</ul>
+<hr />
+<h2 id="references">References</h2>
+<ul>
+<li>dropbox: <a href="https://www.dropbox.com/install">Install</a></li>
+<li>linuxbabe: <a href="https://www.linuxbabe.com/ubuntu/install-dropbox-ubuntu-18-04">How to Install Dropbox on Ubuntu 18.04 From Official Repository</a></li>
+<li>linoxide: <a href="https://linoxide.com/linux-how-to/install-dropbox-ubuntu/#:~:text=Install%20Dropbox%20On%20Ubuntu%20Desktop,select%20Open%20With%20Software%20Install.">How to Install Dropbox on Ubuntu 18.04 (Terminal/GUI)</a></li>
+<li>github: <a href="https://github.com/joeroback/dropbox">dropbox systemd service setup</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./../../../site.css" rel="stylesheet" type="text/css" />
+      <link href="./../../../pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./../../../index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./../../../index.html">Home</a>
+              <a class="logo" href="./../../../colophon.html">Colophon</a>
+              <a class="logo" href="./../../../about.html">About</a>
+              <a class="logo" href="./../../../topics.html">Topics</a>
+            </div>
+          </div>
+
+          <div id="main">
+                                                              <img src=https://www.pinterest.com/pin/447967494192391995/>
+                <header id="title-block-header">
+    <h1 class="title">Wire Current Limits</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                <p class="date">17 Feb 2020</p>
+            </header>
+    <hr>
+<h2 id="soldering-wires">Soldering Wires</h2>
+<p>Sparkfun has great info on <a href="https://learn.sparkfun.com/tutorials/working-with-wire/all">working with wiring</a>.</p>
+<p><img src="https://cdn.thingiverse.com/renders/30/f7/d6/21/95/be63798c5a99cbccb5720450970581b3_preview_featured.jpg" /></p>
+<p>Thingiverse: <a href="https://www.thingiverse.com/thing:2757071">3d printed helping hands</a></p>
+<h2 id="wiring-current-limits">Wiring Current Limits</h2>
+<ul>
+<li>You can <em>theoretically</em> run large amounts of current through a wire until you hit its melting point (~2000C for copper). However, there are other limitations like: conductor size, ambient temperature, number of conductors, internal resistance of wire, and insulation.
+<ul>
+<li>PVC insulation melts around 100C</li>
+<li>Silicon insulation melts around 200C</li>
+</ul></li>
+<li>For high current applications (i.e., robotics, quadcopters, etc), use silicone wire which has a 200C rating
+<ul>
+<li><em>Note:</em> these are about half the Cooner Wire estimates because they are stranded wire.</li>
+<li>16 AWG silicone: ~15A</li>
+<li>14 AWG silicone: ~20A</li>
+<li>12 AWG silicone: ~30A</li>
+</ul></li>
+<li>Use good connectors like XT30 or XT60 which handle 30A or 60A peak and half that in normal operation respectively</li>
+<li>Also, as the wire gets longer, internal resistance causes both voltage and current losses. However, for robotics and things I care about, this generally isn’t a big deal</li>
+</ul>
+<h1 id="references">References</h1>
+<ul>
+<li><a href="https://www.jst.fr/doc/jst/pdf/current_rating.pdf">JST Current Limits for Wires</a></li>
+<li><a href="https://www.coonerwire.com/amp-chart/">Cooner Wire</a></li>
+</ul>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>
