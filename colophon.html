@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML'></script> -->
+      <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    	<link href="https://cdnjs.cloudflare.com/ajax/libs/cc-icons/1.2.1/css/cc-icons.min.css" rel="stylesheet">
+    	<link href="https://cdn.rawgit.com/walchko/font-linux/v0.7.2/assets/font-linux.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro" rel="stylesheet">
+      <link href="./site.css" rel="stylesheet" type="text/css" />
+      <link href="./pandoc.css" rel="stylesheet" type="text/css" />
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            TeX: {
+                equationNumbers: {
+                autoNumber: "AMS",
+                useLabelIds: true
+                }
+            },
+            tex2jax: {
+                inlineMath: [["$","$"],["\\(","\\)"]],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            displayAlign: 'center'
+        });
+      </script>
+
+    </head>
+    <body>
+      <div id="outer-wrapper">
+          <div id="header-wrapper">
+            <div class="title xtralarge bold"><a href="./index.html">Planet Express</a></div>
+            <div class="normal small"> Our crew is replaceable. Your package isn't. </div>
+
+            <div class="nav normal">
+              <a class="logo" href="./index.html">Home</a>
+              <a class="logo" href="./colophon.html">Colophon</a>
+              <!-- <a class="logo" href="./about.html">About</a> -->
+              <!-- <a class="logo" href="./topics.html">Topics</a> -->
+            </div>
+          </div>
+
+          <div id="main">
+                                                              <img src=pics/ship.jpg>
+                <header id="title-block-header">
+    <h1 class="title">Colophon</h1>
+                <p class="author">Kevin J. Walchko, PhD</p>
+                </header>
+    <hr>
+<p>This is the Repo that feeds my personal github page. This has the
+ability to build a website from a combination of:</p>
+<ul>
+<li><a
+href="http://docutils.sourceforge.net/rst.html">reStructuredText</a></li>
+<li><a href="http://pandoc.org/MANUAL.html#pandocs-markdown">Pandoc
+flavored markdown</a></li>
+<li><a href="https://jupyter.org/">Jupyter Notebooks</a></li>
+<li>The build tool is based on Python 3</li>
+</ul>
+<p>I use to use Pelican, but that had issues with latex equations and
+took months for them to fix it (sort of). Basically <strong>Pelican is a
+mass of crap</strong> that limps along for people who cannot program.
+Also, I never founds a nice way to include jupyter notebook content with
+it.</p>
+<h2 id="setup-macos">Setup macOS</h2>
+<p>I also setup a virtual environment for my python, so I don’t collide
+with my distro’s python version.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install pandoc python</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> cask install basictex</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install jinja2 jupyter</span></code></pre></div>
+<h2 id="setup-linux">Setup Linux</h2>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install pandoc texlive python3</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install jinja2 matplotlib numpy jupyter opencv-contrib-python</span></code></pre></div>
+<h2 id="build">Build</h2>
+<p>The build script works as follows:</p>
+<ul>
+<li><code>build.py</code>: builds the website using <code>pandoc</code>
+and <code>jupyter-nbconvert</code></li>
+</ul>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">kevin@logan</span> github-blog $ ./build.py</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Cleaning</span> out old html <span class="at">------------------</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Made <span class="ex">topics.html</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> template.jinja2</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">==[Publications</span>   ] ===============================</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> mimo-fuzzy-FCRAR.pdf</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> walchko-MS-EE.pdf</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> subjugator-FCRAR.pdf</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> Optimal-geo-lasercom.pdf</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> AIAA-Reconfigurable-AUV.pdf</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> walchko-nav-FCRAR.pdf</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> walchko-INS-FCRAR-2003.pdf</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> walchko-SM-FCRAR-2003.pdf</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> AUVSI-2001.pdf</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> AUVSI-2002.pdf</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> walchko-MS-ME.pdf</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> walchko-GSRP.pdf</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> embeded_linux_CF.pdf</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> walchko-PhD-ME.pdf</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> subjugator-sinkin-is-easy.pdf</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Skipping <span class="ex">folder</span> old</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="ex">==[pics</span>           ] ===============================</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> 153d_CAV.png</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> space.png</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> ship.jpg</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> IJC.jpg</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> air_assault2.jpg</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> rack.png</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> ISAF.png</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> 53rd_INF.png</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> rocket.png</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> grim.png</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;</span> Copying <span class="fu">file</span> Farnsworth.png</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span></span></code></pre></div>
+<p>Now, you also need to do
+<code>pip install jupyter numpy matplotlib</code> if you are going to
+convert jupyter notebooks into html.</p>
+<h2 id="pygments-dont-use-this">Pygments (Don’t Use This)</h2>
+<p>To setup the <code>css</code> for code, I do:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">kevin@Logan</span> $ pygmentize <span class="at">-S</span> default <span class="at">-f</span> html <span class="op">&gt;</span> pygments.css</span></code></pre></div>
+<h2 id="pandoc-template">Pandoc Template</h2>
+<p>I created a pandoc template: <code>template.markdown.pandoc</code>
+which allows:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> Holonomic Robot Equations of Motion</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> Kevin Walchko, Phd</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> 2016-03-12</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">modified</span><span class="kw">:</span><span class="at"> 2020-10-2</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">image</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;https://i.pinimg.com/564x/ae/18/7e/ae187ea8eacb0e12189144bdce37636a.jpg&quot;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">image-height</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;300px&quot;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">image-width</span><span class="kw">:</span><span class="at"> </span><span class="st">&quot;100%&quot;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">subtitle</span><span class="kw">:</span><span class="at"> Somthing here ... but I don&#39;t use it :P</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span><span class="kw">:</span><span class="at"> Something here ... but I don&#39;t use it :P</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span></code></pre></div>
+<p><span class="emoji"
+data-emoji="stuck_out_tongue_winking_eye">😜</span></p>
+
+                      </div>
+
+        </div>
+    </body>
+<div id="footer-wrapper">
+
+  <div class="logo"></div>
+
+  <div class="logo">
+    <a class="logo" href="http://github.com/walchko"><i class="fl-github fl-36"></i></a>
+    <a class="logo" href="http://stackoverflow.com/users/5374768/kevin"><i class="fl-stackoverflow fl-36"></i></a>
+    <a class="logo" href="http://raspberrypi.stackexchange.com/users/1677/kevin"><i class="fl-stackexchange fl-36"></i></a>
+    <a class="logo" href="https://www.npmjs.com/~kevin.walchko"><i class="fl-npm fl-36"></i></a>
+    <a class="logo" href="https://pypi.python.org/pypi"><i class="fl-python fl-36"></i></a>
+    <a class="logo" href="https://bitbucket.org/walchko/"><i class="fl-bitbucket fl-36"></i></a>
+  </div>
+
+  <div class="logo">
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+      <i class="cc cc-by-sa cc-lg"></i>
+    </a>
+  </div>
+
+  <div class="pure-u-1">
+    <a class="logo" href="https://github.com/walchko/github-blog">&copy;&nbsp;2016&nbsp;Kevin J. Walchko</a>
+  </div>
+
+</div>
+
+</html>
